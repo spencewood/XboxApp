@@ -16,8 +16,6 @@ define(['jquery', 'app/models/game', 'app/helpers/sort', 'app/lib/spine/spine'],
 			}
 		});
 
-
-
 		return Games;
 	}
 );

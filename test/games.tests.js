@@ -1,5 +1,5 @@
-define(['app/controllers/games', 'app/models/game', 'expect/expect'],
-	function(Games, Game){
+define(['app/controllers/games', 'app/models/game', 'app/models/daily', 'app/helpers/date', 'expect/expect'],
+	function(Games, Game, Daily, datetool){
 		describe('Games', function(){
 			//setup two games for testing most actions
 			var ownedGame = new Game({title: 'Owned', votes: 2, owned: true});
@@ -83,6 +83,31 @@ define(['app/controllers/games', 'app/models/game', 'expect/expect'],
 
 					expect(owned[0].title).to.be('a');
 					expect(owned[owned.length-1].title).to.be('z');
+				});
+
+				it('sets daily marker after successful game addition', function(done){
+					//bind event
+					Game.one('create', function(){
+						var today = new Date();
+						expect(Daily.find('day', datetool.getFormattedString(new Date())));
+						done();
+					});
+				});
+
+				it('does not allow duplicate titles', function(){
+					throw 'not implemented';
+				});
+
+				it('only allows adding one game title per day', function(){
+					throw 'not implemented';
+				});
+
+				it('will not allow adding of game title if a vote has been made', function(){
+					throw 'not implemented';
+				});
+
+				it('can mark a game as owned', function(){
+					throw 'not implemented';
 				});
 			});
 		});
