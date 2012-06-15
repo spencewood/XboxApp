@@ -56,15 +56,33 @@ define(['app/controllers/games', 'app/models/game', 'expect/expect'],
 				});
 
 				it('returns wanted games in descending order by vote count', function(){
-					//add some new games
+					//add some unowned games
 					Spine.Ajax.disable(function(){
 						new Game({votes: 1, owned: false}).save();
 						new Game({votes: 50, owned: false}).save();
 						new Game({votes: 15, owned: false}).save();
 						new Game({votes: 7, owned: false}).save();
 					});
-					console.log(g.getUnowned());
-					expect(g.getUnowned()[0].votes).to.be(1);
+					
+					var unowned = g.getUnowned();
+
+					expect(unowned[0].votes).to.be(1);
+					expect(unowned[unowned.length-1].votes).to.be(50);
+				});
+
+				it('returns owned games in alpha order', function(){
+					//add some owned games
+					Spine.Ajax.disable(function(){
+						new Game({title: 'z', owned: true}).save();
+						new Game({title: 'ab', owned: true}).save();
+						new Game({title: 'a', owned: true}).save();
+						new Game({title: 'AB', owned: true}).save();
+					});
+
+					var owned = g.getOwned();
+
+					expect(owned[0].title).to.be('a');
+					expect(owned[owned.length-1].title).to.be('z');
 				});
 			});
 		});

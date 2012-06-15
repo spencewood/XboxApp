@@ -1,5 +1,5 @@
-define(['jquery', 'app/models/game', 'app/lib/spine/spine'], 
-	function($, Game){
+define(['jquery', 'app/models/game', 'app/helpers/sort', 'app/lib/spine/spine'], 
+	function($, Game, sort){
 		var Games = Spine.Controller.sub({
 			init: function(){
 				Game.bind('refresh', function(){
@@ -8,11 +8,11 @@ define(['jquery', 'app/models/game', 'app/lib/spine/spine'],
 			},
 
 			getOwned: function(){
-				return Game.findAllByAttribute('owned', true);
+				return Game.findAllByAttribute('owned', true).sort(sort.byProperty('title'));
 			},
 
 			getUnowned: function(){
-				return Game.findAllByAttribute('owned', false);
+				return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes'));
 			}
 		});
 
