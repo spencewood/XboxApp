@@ -1,5 +1,10 @@
-define(['app/controllers/games', 'app/models/game', 'app/models/daily', 'app/helpers/date', 'expect/expect'],
-	function(Games, Game, Daily, datetool){
+define(['app/controllers/games',
+	'app/controllers/dailies',
+	'app/models/game',
+	'app/models/daily',
+	'app/helpers/date',
+	'expect/expect'],
+	function(Games, Dailies, Game, Daily, datetool){
 		describe('Games', function(){
 			//setup two games for testing most actions
 			var ownedGame = new Game({title: 'Owned', votes: 2, owned: true});
@@ -30,6 +35,11 @@ define(['app/controllers/games', 'app/models/game', 'app/models/daily', 'app/hel
 			describe('Controller', function(){
 				var g = new Games();
 
+				before(function(){
+					//contructor contains event binding for daily
+					new Dailies();
+				});
+
 				beforeEach(function(done){
 					Spine.Ajax.disable(function() {
 						ownedGame.save();
@@ -40,6 +50,7 @@ define(['app/controllers/games', 'app/models/game', 'app/models/daily', 'app/hel
 
 				afterEach(function(done){
 					Game.deleteAll();
+					Daily.deleteAll();
 					done();
 				});
 
@@ -86,24 +97,56 @@ define(['app/controllers/games', 'app/models/game', 'app/models/daily', 'app/hel
 				});
 
 				it('sets daily marker after successful game addition', function(done){
-					//bind event
+					//bind test event
 					Game.one('create', function(){
 						var today = new Date();
-						expect(Daily.find('day', datetool.getFormattedString(new Date())));
+						expect(Dailies.open()).to.be(false);
 						done();
+					});
+
+					Spine.Ajax.disable(function(){
+						new Games().add('test game');
 					});
 				});
 
 				it('does not allow duplicate titles', function(){
-					throw 'not implemented';
+					var addAGame = function(){
+						return g.add('test game');
+					};
+
+					//add a game
+					Spine.Ajax.disable(function(){
+						addAGame();
+					});
+					//clear our daily allowance
+					Daily.deleteAll();
+
+					//try to add a game with the same title
+					Spine.Ajax.disable(function(){
+						expect(addAGame()).to.be(false);
+					});
 				});
 
 				it('only allows adding one game title per day', function(){
-					throw 'not implemented';
+					var addAGame = function(){
+						return g.add('test game');
+					};
+
+					//add a game
+					Spine.Ajax.disable(function(){
+						addAGame();
+					});
+
+					//add a game
+					Spine.Ajax.disable(function(){
+						expect(addAGame()).to.be(false);
+					});
 				});
 
 				it('will not allow adding of game title if a vote has been made', function(){
-					throw 'not implemented';
+					Dailies.setToday();
+
+					expect(g.add('test game')).to.be(false);
 				});
 
 				it('can mark a game as owned', function(){
