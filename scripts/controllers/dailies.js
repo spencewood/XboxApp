@@ -17,7 +17,9 @@ define(['app/models/daily',
 		};
 
 		Dailies.setToday = function(){
-			new Daily({day: dateTool.getFormattedString(), added: new Date()}).save();
+			if(Dailies.isOpen()){
+				new Daily({day: dateTool.getFormattedString(), added: new Date()}).save();
+			}
 		};
 
 		Dailies.clear = function(){

@@ -7,7 +7,7 @@ requirejs.config({
 define(['mocha/mocha', 'app/lib/spine/spine', 'app/lib/spine/ajax'], function(){
 	mocha.setup('bdd');
 
-	require(['games.tests', 'votes.tests', 'service.tests'], function(){
+	require(['base.tests', 'games.tests', 'gametitles.tests', 'daily.tests', 'service.tests', 'helper.tests'], function(){
 		mocha.run();
 	});
 });
