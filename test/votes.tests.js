@@ -119,7 +119,7 @@ define(['app/controllers/votes',
 				});
 
 				v.vote(1);
-				expect(Dailies.open()).to.be(false);
+				expect(Dailies.isOpen()).to.be(false);
 				stub.restore();
 				ajaxStub.restore();
 			});

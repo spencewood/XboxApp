@@ -40,14 +40,6 @@ define(['app/controllers/games',
 					new Dailies();
 				});
 
-				beforeEach(function(done){
-					Spine.Ajax.disable(function() {
-						ownedGame.save();
-						unownedGame.save();
-						done();
-					});
-				});
-
 				afterEach(function(done){
 					Game.deleteAll();
 					Daily.deleteAll();
@@ -55,12 +47,22 @@ define(['app/controllers/games',
 				});
 
 				it('returns only owned games when getting owned games', function(){
+					Spine.Ajax.disable(function() {
+						ownedGame.save();
+						unownedGame.save();
+					});
+
 					expect(g.getOwned().length).to.be(1);
 					expect(g.getOwned()[0].toJSON()).to.have.key('title');
 					expect(g.getOwned()[0].toJSON().title).to.be('Owned');
 				});
 
 				it('returns only unowned (wanted) games when getting unowned games', function(){
+					Spine.Ajax.disable(function() {
+						ownedGame.save();
+						unownedGame.save();
+					});
+
 					expect(g.getUnowned().length).to.be(1);
 					expect(g.getUnowned()[0].toJSON()).to.have.key('title');
 					expect(g.getUnowned()[0].toJSON().title).to.be('UnOwned');
@@ -69,6 +71,8 @@ define(['app/controllers/games',
 				it('returns wanted games in descending order by vote count', function(){
 					//add some unowned games
 					Spine.Ajax.disable(function(){
+						ownedGame.save();
+						unownedGame.save();
 						new Game({votes: 1, owned: false}).save();
 						new Game({votes: 50, owned: false}).save();
 						new Game({votes: 15, owned: false}).save();
@@ -99,14 +103,19 @@ define(['app/controllers/games',
 				it('sets daily marker after successful game addition', function(done){
 					//bind test event
 					Game.one('create', function(){
-						var today = new Date();
-						expect(Dailies.open()).to.be(false);
+						expect(Dailies.isOpen()).to.be(false);
 						done();
 					});
 
-					Spine.Ajax.disable(function(){
-						new Games().add('test game');
+					var stub = sinon.stub(g, 'canVote', function(){
+						return true;
 					});
+
+					Spine.Ajax.disable(function(){
+						g.add('test game');
+					});
+
+					stub.restore();
 				});
 
 				it('does not allow duplicate titles', function(){
@@ -147,10 +156,6 @@ define(['app/controllers/games',
 					Dailies.setToday();
 
 					expect(g.add('test game')).to.be(false);
-				});
-
-				it('can mark a game as owned', function(){
-					throw 'not implemented';
 				});
 			});
 		});

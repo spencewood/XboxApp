@@ -11,7 +11,7 @@ define(['app/models/daily',
 		});
 
 		//static methods
-		Dailies.open = function(){
+		Dailies.isOpen = function(){
 			var daily = Daily.findByAttribute('day', dateTool.getFormattedString());
 			return daily === null;
 		};
