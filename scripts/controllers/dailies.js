@@ -5,8 +5,6 @@ define(['app/models/daily',
 	function(Daily, Game, dateTool){
 		var Dailies = Spine.Controller.sub({
 			init: function(){
-				//subscribe to a Game's create event and set or daily
-				Game.bind('create', Dailies.setToday);
 			}
 		});
 

@@ -5,31 +5,36 @@ define(['jquery',
 	'app/helpers/sort',
 	'app/lib/spine/spine'],
 	function($, Base, Dailies, Game, sort){
-		var Games = function(){
-			Game.bind('create', Dailies.setToday);
-		};
-		Games.prototype = new Base();
-		Games.prototype.constructor = Games;
+		var Games = Base.sub({
+			init: function(){
+				Game.bind('create', Dailies.setToday);
+				Game.bind('vote', Dailies.setToday);
+			},
 
-		Games.prototype.getOwned = function(){
-			return Game.findAllByAttribute('owned', true).sort(sort.byProperty('title'));
-		};
+			getOwned: function(){
+				return Game.findAllByAttribute('owned', true).sort(sort.byProperty('title'));
+			},
 
-		Games.prototype.getUnowned = function(){
-			return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes'));
-		};
+			getUnowned: function(){
+				return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes'));
+			},
 
-		Games.prototype.titleExists = function(title){
-			return Game.findByAttribute('title', title) !== null;
-		};
+			titleExists: function(title){
+				return Game.findByAttribute('title', title) !== null;
+			},
 
-		Games.prototype.add = function(title){
-			if(!this.titleExists(title) && this.canVote() && Dailies.isOpen()){
-				new Game({ title: title }).save();
-				return true;
+			add: function(title, options){
+				if(!this.titleExists(title) && this.canVote() && Dailies.isOpen()){
+					new Game({ title: title }).save(options);
+					return true;
+				}
+				return false;
+			},
+
+			clear: function(options){
+				Game.clear(options);
 			}
-			return false;
-		};
+		});
 
 		return Games;
 	}

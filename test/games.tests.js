@@ -11,24 +11,31 @@ define(['app/controllers/games',
 			var unownedGame = new Game({title: 'UnOwned', votes: 2, owned: false});
 
 			describe('Model', function(){
-				before(function(done){
-					Spine.Ajax.disable(function() {
-						ownedGame.save();
-						unownedGame.save();
-						done();
-					});
+				beforeEach(function(){
+					Game.deleteAll();
 				});
 
 				it('returns all games when requesting all', function(){
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
 					expect(Game.all().length).to.be(2);
 				});
 
 				it('supports find all by attribute', function(){
+					ownedGame.save( {disableAjax: true});
+					unownedGame.save({disableAjax: true});
 					expect(Game.findAllByAttribute('votes', 2).length).to.be(2);
 				});
 
 				it('returns games with correct vote value', function(){
+					ownedGame.save( {disableAjax: true});
+					unownedGame.save({disableAjax: true});
 					expect(Game.first().votes).to.be(2);
+				});
+
+				it('calls create ajax method when saving', function(){
+					//ownedGame.save({disableAjax: true});
+				
 				});
 			});
 
@@ -47,10 +54,8 @@ define(['app/controllers/games',
 				});
 
 				it('returns only owned games when getting owned games', function(){
-					Spine.Ajax.disable(function() {
-						ownedGame.save();
-						unownedGame.save();
-					});
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
 
 					expect(g.getOwned().length).to.be(1);
 					expect(g.getOwned()[0].toJSON()).to.have.key('title');
@@ -58,10 +63,8 @@ define(['app/controllers/games',
 				});
 
 				it('returns only unowned (wanted) games when getting unowned games', function(){
-					Spine.Ajax.disable(function() {
-						ownedGame.save();
-						unownedGame.save();
-					});
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
 
 					expect(g.getUnowned().length).to.be(1);
 					expect(g.getUnowned()[0].toJSON()).to.have.key('title');
@@ -70,14 +73,12 @@ define(['app/controllers/games',
 
 				it('returns wanted games in descending order by vote count', function(){
 					//add some unowned games
-					Spine.Ajax.disable(function(){
-						ownedGame.save();
-						unownedGame.save();
-						new Game({votes: 1, owned: false}).save();
-						new Game({votes: 50, owned: false}).save();
-						new Game({votes: 15, owned: false}).save();
-						new Game({votes: 7, owned: false}).save();
-					});
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
+					new Game({votes: 1, owned: false}).save({disableAjax: true});
+					new Game({votes: 50, owned: false}).save({disableAjax: true});
+					new Game({votes: 15, owned: false}).save({disableAjax: true});
+					new Game({votes: 7, owned: false}).save({disableAjax: true});
 					
 					var unowned = g.getUnowned();
 
@@ -87,12 +88,10 @@ define(['app/controllers/games',
 
 				it('returns owned games in alpha order', function(){
 					//add some owned games
-					Spine.Ajax.disable(function(){
-						new Game({title: 'z', owned: true}).save();
-						new Game({title: 'ab', owned: true}).save();
-						new Game({title: 'a', owned: true}).save();
-						new Game({title: 'AB', owned: true}).save();
-					});
+					new Game({title: 'z', owned: true}).save({disableAjax: true});
+					new Game({title: 'ab', owned: true}).save({disableAjax: true});
+					new Game({title: 'a', owned: true}).save({disableAjax: true});
+					new Game({title: 'AB', owned: true}).save({disableAjax: true});
 
 					var owned = g.getOwned();
 
@@ -111,51 +110,65 @@ define(['app/controllers/games',
 						return true;
 					});
 
-					Spine.Ajax.disable(function(){
-						g.add('test game');
-					});
+					g.add('test game', {disableAjax: true});
 
 					stub.restore();
 				});
 
 				it('does not allow duplicate titles', function(){
 					var addAGame = function(){
-						return g.add('test game');
+						return g.add('test game', {disableAjax: true});
 					};
 
 					//add a game
-					Spine.Ajax.disable(function(){
-						addAGame();
-					});
+					addAGame();
 					//clear our daily allowance
 					Daily.deleteAll();
 
 					//try to add a game with the same title
-					Spine.Ajax.disable(function(){
-						expect(addAGame()).to.be(false);
-					});
+					expect(addAGame()).to.be(false);
 				});
 
 				it('only allows adding one game title per day', function(){
 					var addAGame = function(){
-						return g.add('test game');
+						return g.add('test game', {disableAjax: true});
 					};
 
 					//add a game
-					Spine.Ajax.disable(function(){
-						addAGame();
-					});
+					addAGame();
 
 					//add a game
-					Spine.Ajax.disable(function(){
-						expect(addAGame()).to.be(false);
-					});
+					expect(addAGame()).to.be(false);
 				});
 
 				it('will not allow adding of game title if a vote has been made', function(){
 					Dailies.setToday();
 
-					expect(g.add('test game')).to.be(false);
+					expect(g.add('test game', {disableAjax: true})).to.be(false);
+				});
+
+				it('sets daily token when vote is made', function(done){
+					//stub our day to a voting day
+					var stub = sinon.stub(g, 'getDate', function(){
+						return new Date('01-02-2012'); //monday
+					});
+
+					Game.bind('vote', function(d){
+						expect(d).to.not.be(null);
+						done();
+					});
+
+					new Game().vote({disableAjax:true});
+					//expect(Dailies.isOpen()).to.be(false);
+					stub.restore();
+				});
+
+				it('is able to clear all games', function(){
+					ownedGame.save({disableAjax: true});
+
+					g.clear({disableAjax: true});
+
+					expect(g.getOwned().length).to.be(0);
 				});
 			});
 		});

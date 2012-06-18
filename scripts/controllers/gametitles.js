@@ -3,32 +3,27 @@ define(['jquery',
 	'app/controllers/dailies',
 	'app/settings'],
 	function($, Base, Dailies, settings){
-		var GameTitles = function(){};
-		GameTitles.prototype = new Base();
-		GameTitles.prototype.constructor = GameTitles;
+		var GameTitles = Base.sub({
+			init: function(){
+				if(!this.item){
+					throw "GameTitle must have an item";
+				}
+			},
 
-		GameTitles.prototype.vote = function(id){
-			if(this.canVote() && Dailies.isOpen()){
-				this._ajaxVote(id, function(){
-					Dailies.setToday();
-				});
-			}
-			else{
-				return false;
-			}
-			return true;
-		};
+			vote: function(options){
+				if(this.canVote() && Dailies.isOpen()){
+					this.item.vote(options);
+				}
+				else{
+					return false;
+				}
+				return true;
+			},
 
-		GameTitles.prototype._ajaxVote = function(id, cb){
-			/*$.ajax({
-				url: settings.votingServiceUrl + '/vote',
-				dataType: 'jsonp',
-				data: {
-					apiKey: settings.apiKey
-				},
-				success: cb
-			});*/
-		};
+			setOwned: function(options){
+				this.item.setOwned(options);
+			}
+		});
 
 		return GameTitles;
 	}

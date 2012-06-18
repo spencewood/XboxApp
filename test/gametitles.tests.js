@@ -1,15 +1,30 @@
 define(['app/controllers/gametitles',
 	'app/controllers/dailies',
 	'app/models/daily',
+	'app/models/game',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(GameTitles, Dailies, Daily, dateTool){
+	function(GameTitles, Dailies, Daily, Game, dateTool){
 		describe('Game Titles', function(){
+			it('contains the model item for an individual game', function(){
+				var model = new Game({title: 'test game'});
+				var controller = new GameTitles({item: model});
+				expect(controller.item).to.be(model);
+			});
+
+			it('throws exception when instatiated without an item context', function(done){
+				try{
+					new GameTitles();
+				}catch(e){
+					done();
+				}
+			});
+
 			describe('Voting', function(){
 				var t = null;
 				beforeEach(function(done){
-					t = new GameTitles();
+					t = new GameTitles({item: new Game({title: 'game', owned: false})});
 					Daily.deleteAll();
 					done();
 				});
@@ -30,7 +45,7 @@ define(['app/controllers/gametitles',
 
 					//setup spy here
 
-					expect(t.vote(1)).to.be.ok();
+					expect(t.vote({disableAjax: true})).to.be.ok();
 					stub.restore();
 				});
 
@@ -41,27 +56,22 @@ define(['app/controllers/gametitles',
 					});
 					//we have already voted or added a game today
 					//will not correspond with stubbed day -- not testing that
-					//new Daily({day: dateTool.getFormattedString()}).save();
 					Dailies.setToday();
 
 					expect(t.vote()).to.be(false);
 					stub.restore();
 				});
 
-				it('sets daily token when vote is made', function(){
-					//stub our day to a voting day
-					var stub = sinon.stub(t, 'getDate', function(){
-						return monday;
+				it('triggers the vote event when a vote is made', function(){
+					Game.bind('vote', function(d){
+						expect(d).to.not.be(null);
 					});
-					//stub for ajax call -- just calls callback immediately
-					var ajaxStub = sinon.stub(t, '_ajaxVote', function(id, cb){
-						cb();
-					});
+					t.vote();
+				});
 
-					t.vote(1);
-					expect(Dailies.isOpen()).to.be(false);
-					stub.restore();
-					ajaxStub.restore();
+				it('is able to set a game as owned', function(){
+					t.setOwned({disableAjax: true});
+					expect(t.item.owned).to.be(true);
 				});
 			});
 		});
