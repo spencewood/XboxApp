@@ -3,7 +3,8 @@ define(['app/controllers/games',
 	'app/models/game',
 	'app/models/daily',
 	'app/helpers/date',
-	'expect/expect'],
+	'expect/expect',
+	'sinon/sinon'],
 	function(Games, Dailies, Game, Daily, datetool){
 		describe('Games', function(){
 			//setup two games for testing most actions
@@ -170,6 +171,19 @@ define(['app/controllers/games',
 
 					expect(g.getOwned().length).to.be(0);
 				});
+
+				it('calls the addOne rendering for all viewable games', function(){
+					sinon.spy(g, 'addOne');
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
+					expect(Game.all().length).to.be(2);
+					g.addAll();
+					expect(g.addOne.calledTwice).to.be(true);
+				});
+
+				// it('creates a new gametitle controller for each game item rendered', function(){
+					
+				// });
 			});
 		});
 	}

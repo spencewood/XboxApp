@@ -9,6 +9,15 @@ define(['jquery',
 			init: function(){
 				Game.bind('create', Dailies.setToday);
 				Game.bind('vote', Dailies.setToday);
+				Game.bind('refresh, clear', this.proxy(this.addAll));
+			},
+
+			addOne: function(item){
+				
+			},
+
+			addAll: function(){
+				Game.each(this.proxy(this.addOne));
 			},
 
 			getOwned: function(){
