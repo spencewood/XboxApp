@@ -1,4 +1,6 @@
-define(['jquery', 'app/settings', 'app/lib/spine/spine'],
+define(['jquery',
+	'app/settings',
+	'app/lib/spine/spine'],
 	function($, settings){
 		var Game = Spine.Model.sub();
 		Game.configure('Game', 'id', 'title', 'votes', 'owned');
@@ -17,7 +19,10 @@ define(['jquery', 'app/settings', 'app/lib/spine/spine'],
 				url: [settings.votingServiceUrl, method].join('/'),
 				dataType: 'jsonp',
 				data: data,
-				success: cb
+				success: cb,
+				error: function(e){
+					console.log(e);
+				}
 			});
 		};
 
@@ -29,13 +34,14 @@ define(['jquery', 'app/settings', 'app/lib/spine/spine'],
 
 			setOwned: function(options, cb){
 				connect('setgotit', cb, {id: this.id}, options);
+				//Spine wants to call save after updating attributes. disable.
 				this.updateAttribute('owned', true, {disableAjax: true});
 			},
 
 			//override spine's save method because we aren't using REST
 			save: function(options, cb){
 				connect('addnewgame', cb, {title: this.title}, options);
-				Game.__super__.save.call(this);
+				return Game.__super__.save.call(this);
 			}
 		});
 
@@ -48,8 +54,13 @@ define(['jquery', 'app/settings', 'app/lib/spine/spine'],
 
 			fetch: function(options, cb){
 				connect('getgames', function(records){
-					Game.refresh(records);
-				}, null, null, options);
+					if(records){
+						Game.refresh(records);
+					}
+					if(cb){
+						cb();
+					}
+				}, null, options);
 			}
 		});
 	

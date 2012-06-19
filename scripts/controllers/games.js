@@ -1,10 +1,11 @@
 define(['jquery',
 	'app/controllers/_rulebase',
+	'app/controllers/gametitle',
 	'app/controllers/dailies',
 	'app/models/game',
 	'app/helpers/sort',
 	'app/lib/spine/spine'],
-	function($, Base, Dailies, Game, sort){
+	function($, Base, GameTitle, Dailies, Game, sort){
 		var Games = Base.sub({
 			init: function(){
 				Game.bind('create', Dailies.setToday);
@@ -13,7 +14,8 @@ define(['jquery',
 			},
 
 			addOne: function(item){
-				
+				var title = new GameTitle({item: item});
+				this.append(title.render());
 			},
 
 			addAll: function(){

@@ -1,0 +1,1 @@
+<span><a href="#" class="vote-action">vote</a></span>{{title}}

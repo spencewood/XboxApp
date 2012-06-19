@@ -4,9 +4,17 @@
         <meta charset="utf8" />
         <title>Mocha Test Runner</title>
         <link rel="stylesheet" href="mocha/mocha.css" />
-        <script data-main="runner" src="../scripts/lib/require-jquery.js"></script>
+        <style>
+        	#testArea{
+        		display: none;
+        	}
+        </style>
     </head>
 <body>
     <div id="mocha"></div>
+    <div id="testArea">
+    	<ul id="games"></ul>
+    </div>
+    <script data-main="runner" src="../scripts/lib/require-jquery.js"></script>
 </body>
 </html>

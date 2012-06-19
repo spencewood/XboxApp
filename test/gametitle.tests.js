@@ -1,21 +1,21 @@
-define(['app/controllers/gametitles',
+define(['app/controllers/gametitle',
 	'app/controllers/dailies',
 	'app/models/daily',
 	'app/models/game',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(GameTitles, Dailies, Daily, Game, dateTool){
+	function(GameTitle, Dailies, Daily, Game, dateTool){
 		describe('Game Titles', function(){
 			it('contains the model item for an individual game', function(){
 				var model = new Game({title: 'test game'});
-				var controller = new GameTitles({item: model});
+				var controller = new GameTitle({item: model});
 				expect(controller.item).to.be(model);
 			});
 
 			it('throws exception when instatiated without an item context', function(done){
 				try{
-					new GameTitles();
+					new GameTitle();
 				}catch(e){
 					done();
 				}
@@ -24,7 +24,7 @@ define(['app/controllers/gametitles',
 			describe('Voting', function(){
 				var t = null;
 				beforeEach(function(done){
-					t = new GameTitles({item: new Game({title: 'game', owned: false})});
+					t = new GameTitle({item: new Game({title: 'game', owned: false})});
 					Daily.deleteAll();
 					done();
 				});
@@ -66,12 +66,45 @@ define(['app/controllers/gametitles',
 					Game.bind('vote', function(d){
 						expect(d).to.not.be(null);
 					});
-					t.vote();
+					t.vote({disableAjax: true});
 				});
 
 				it('is able to set a game as owned', function(){
 					t.setOwned({disableAjax: true});
 					expect(t.item.owned).to.be(true);
+				});
+			});
+
+			describe('Integration', function(){
+				var title = null,
+					game = null;
+				before(function(){
+					$("#games").empty();
+				});
+
+				beforeEach(function(done){
+					game = new Game({title: 'test game'}).save({disableAjax: true});
+					title = new GameTitle({item: game});
+					done();
+				});
+
+				afterEach(function(){
+					Game.deleteAll();
+					$("#games").empty();
+				});
+
+				it('sets vote when clicking on vote button for this game', function(){
+					title.render();
+					var spy = sinon.spy(title, 'vote');
+					$("#games li:first .vote-action").click();
+					expect(title.vote.called).to.be(true);
+				});
+
+				it('sets owned when clicking on the owned button for this game', function(){
+					title.render();
+					var spy = sinon.spy(title, 'setOwned');
+					$("#games li:first .vote-action").click();
+					expect(title.setOwned.called).to.be(true);
 				});
 			});
 		});
