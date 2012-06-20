@@ -9,20 +9,22 @@ define(['app/models/daily',
 		});
 
 		//static methods
-		Dailies.isOpen = function(){
-			var daily = Daily.findByAttribute('day', dateTool.getFormattedString());
-			return daily === null;
-		};
+		Dailies.extend({
+			isOpen: function(){
+				var daily = Daily.findByAttribute('day', dateTool.getFormattedString());
+				return daily === null;
+			},
 
-		Dailies.setToday = function(){
-			if(Dailies.isOpen()){
-				new Daily({day: dateTool.getFormattedString(), added: new Date()}).save();
+			setToday: function(){
+				if(Dailies.isOpen()){
+					new Daily({day: dateTool.getFormattedString(), added: new Date()}).save();
+				}
+			},
+
+			clear: function(){
+				Daily.deleteAll();
 			}
-		};
-
-		Dailies.clear = function(){
-			Daily.deleteAll();
-		};
+		});
 
 		return Dailies;
 	}

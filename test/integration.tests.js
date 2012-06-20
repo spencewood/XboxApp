@@ -53,6 +53,10 @@ define(['app/controllers/games',
 				expect(GameTitle.prototype.setOwnedEvent.called).to.be(true);
 				stub.restore();
 			});
+
+			it('will fire add game event when pressing enter in the add game input field', function(){
+				//cant actually test simulating pressing enter in an input. let's trust it.
+			});
 		});
 	}
 );

@@ -1,13 +1,15 @@
 define(['app/controllers/games',
 	'app/controllers/GameTitle',
 	'app/controllers/dailies',
+	'app/controllers/home',
+	'app/controllers/_rulebase',
 	'app/models/game',
 	'app/models/daily',
 	'app/helpers/date',
 	'app/settings',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Games, GameTitle, Dailies, Game, Daily, datetool, settings){
+	function(Games, GameTitle, Dailies, Home, Base, Game, Daily, datetool, settings){
 		describe('Games', function(){
 			//setup two games for testing most actions
 			var ownedGame = new Game({title: 'Owned', votes: 2, owned: true});
@@ -51,7 +53,8 @@ define(['app/controllers/games',
 			});
 
 			describe('Controller', function(){
-				var g = new Games({el: "#games"});
+				var g = new Games({el: "#games"}),
+					h = new Home({el: 'body'});
 
 				before(function(){
 					//contructor contains event binding for daily
@@ -63,6 +66,22 @@ define(['app/controllers/games',
 					Game.deleteAll();
 					Daily.deleteAll();
 					done();
+				});
+
+				it('sets daily marker after successful game addition', function(done){
+					//bind test event
+					Game.one('create', function(){
+						expect(Dailies.isOpen()).to.be(false);
+						done();
+					});
+
+					var stub = sinon.stub(Base.prototype, 'canVote', function(){
+						return true;
+					});
+
+					new Game().save({disableAjax: true});
+
+					stub.restore();
 				});
 
 				it('returns only owned games when getting owned games', function(){
@@ -111,76 +130,19 @@ define(['app/controllers/games',
 					expect(owned[owned.length-1].title).to.be('z');
 				});
 
-				it('sets daily marker after successful game addition', function(done){
-					//bind test event
-					Game.one('create', function(){
+				it('sets daily token when vote is made', function(done){
+					Game.one('vote', function(){
 						expect(Dailies.isOpen()).to.be(false);
 						done();
 					});
 
-					var stub = sinon.stub(g, 'canVote', function(){
+					var stub = sinon.stub(Base.prototype, 'canVote', function(){
 						return true;
 					});
 
-					g.add('test game', {disableAjax: true});
-
-					stub.restore();
-				});
-
-				it('does not allow duplicate titles', function(){
-					var addAGame = function(){
-						return g.add('test game', {disableAjax: true});
-					};
-
-					//add a game
-					addAGame();
-					//clear our daily allowance
-					Daily.deleteAll();
-
-					//try to add a game with the same title
-					expect(addAGame()).to.be(false);
-				});
-
-				it('only allows adding one game title per day', function(){
-					var addAGame = function(){
-						return g.add('test game', {disableAjax: true});
-					};
-
-					//add a game
-					addAGame();
-
-					//add a game
-					expect(addAGame()).to.be(false);
-				});
-
-				it('will not allow adding of game title if a vote has been made', function(){
-					Dailies.setToday();
-
-					expect(g.add('test game', {disableAjax: true})).to.be(false);
-				});
-
-				it('sets daily token when vote is made', function(done){
-					//stub our day to a voting day
-					var stub = sinon.stub(g, 'getDate', function(){
-						return new Date('01-02-2012'); //monday
-					});
-
-					Game.bind('vote', function(d){
-						expect(d).to.not.be(null);
-						done();
-					});
-
 					new Game().vote({disableAjax:true});
-					//expect(Dailies.isOpen()).to.be(false);
+
 					stub.restore();
-				});
-
-				it('is able to clear all games', function(){
-					ownedGame.save({disableAjax: true});
-
-					g.clear({disableAjax: true});
-
-					expect(g.getOwned().length).to.be(0);
 				});
 
 				it('calls the addOne rendering for all viewable games', function(){

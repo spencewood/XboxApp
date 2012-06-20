@@ -84,6 +84,10 @@ define(['jquery',
 						cb();
 					}
 				}, null, options);
+			},
+			
+			titleExists: function(title){
+				return Game.findByAttribute('title', title) !== null;
 			}
 		});
 	

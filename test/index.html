@@ -13,7 +13,12 @@
 <body>
     <div id="mocha"></div>
     <div id="testArea">
+    	<!-- a hidden area for our integration tests to run -->
     	<ul id="games"></ul>
+		<form class="well form-inline">
+			<input type="text" class="span3" placeholder="Game title" id="addGame" />
+			<button type="submit" class="btn" id="submitAddGame">Submit</button>
+		</form>
     </div>
     <script data-main="runner" src="../scripts/lib/require-jquery.js"></script>
 </body>

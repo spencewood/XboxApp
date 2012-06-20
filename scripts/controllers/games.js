@@ -7,7 +7,7 @@ define(['jquery',
 	'app/lib/spine/spine',
 	'app/lib/spine/route'],
 	function($, Base, GameTitle, Dailies, Game, sort){
-		var Games = Base.sub({
+		var Games = Spine.Controller.sub({
 			show: 'All',
 
 			init: function(){
@@ -27,7 +27,7 @@ define(['jquery',
 						self.fetchOrShow();
 					}
 				});
-
+				Game.fetch();
 				//this.fetchOrShow();
 			},
 
@@ -61,22 +61,6 @@ define(['jquery',
 
 			getUnowned: function(){
 				return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes'));
-			},
-
-			titleExists: function(title){
-				return Game.findByAttribute('title', title) !== null;
-			},
-
-			add: function(title, options){
-				if(!this.titleExists(title) && this.canVote() && Dailies.isOpen()){
-					new Game({ title: title }).save(options);
-					return true;
-				}
-				return false;
-			},
-
-			clear: function(options){
-				Game.clear(options);
 			}
 		});
 

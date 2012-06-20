@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>Xbox Voting App</title>
-		<script data-main="scripts/app" src="scripts/lib/require-jquery.js"></script>
+	    <link href="/css/bootstrap.css" rel="stylesheet">
+	    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
 	</head>
 	<body>
-		
+		<div class="container">
+			<ul class="nav nav-pills">
+				<a href="#">Home</a>
+			</ul>
+			<form class="well form-inline">
+				<input type="text" class="span3" placeholder="Game title" id="addGame" />
+				<button type="submit" class="btn" id="submitAddGame">Submit</button>
+			</form>
+			<ul id="games">
+			</ul>
+		</div>
+		<script data-main="scripts/app" src="scripts/lib/require-jquery.js"></script>
 	</body>
 </html>
