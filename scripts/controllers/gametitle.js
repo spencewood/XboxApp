@@ -13,7 +13,7 @@ define(['jquery',
 			className: 'game',
 			events: {
 				'click .vote-action': 'voteEvent',
-				'click .setOwned-action': 'setOwnedEvent'
+				'click .owned-action': 'setOwnedEvent'
 			},
 
 			init: function(){

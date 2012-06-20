@@ -1,1 +1,1 @@
-<span><a href="#" class="vote-action">vote</a></span>{{title}}
+<span><a href="#" class="vote-action">vote<a/> <a href="#" class="owned-action">owned</a></span> {{title}}
