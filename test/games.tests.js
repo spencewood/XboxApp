@@ -188,7 +188,7 @@ define(['app/controllers/games',
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 					expect(Game.all().length).to.be(2);
-					g.addAll();
+					g.addSelected();
 					expect(g.addOne.calledTwice).to.be(true);
 				});
 			});

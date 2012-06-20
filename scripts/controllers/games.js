@@ -4,13 +4,41 @@ define(['jquery',
 	'app/controllers/dailies',
 	'app/models/game',
 	'app/helpers/sort',
-	'app/lib/spine/spine'],
+	'app/lib/spine/spine',
+	'app/lib/spine/route'],
 	function($, Base, GameTitle, Dailies, Game, sort){
 		var Games = Base.sub({
+			show: 'All',
+
 			init: function(){
 				Game.bind('create', Dailies.setToday);
 				Game.bind('vote', Dailies.setToday);
-				Game.bind('refresh, clear', this.proxy(this.addAll));
+				Game.bind('refresh', this.proxy(this.addSelected));
+				Game.bind('clear', this.proxy(this.addSelected));
+
+				var self = this;
+				this.routes({
+					'/owned': function(params){
+						self.show = 'Owned';
+						self.fetchOrShow();
+					},
+					'/wanted': function(params){
+						self.show = 'Unowned';
+						self.fetchOrShow();
+					}
+				});
+
+				//this.fetchOrShow();
+			},
+
+			fetchOrShow: function(){
+				if(Game.all().length === 0){
+					Game.fetch();
+				}
+			},
+
+			addSelected: function(){
+				this.proxy(this.addAll(this['get'+this.show]()));
 			},
 
 			addOne: function(item){
@@ -18,8 +46,13 @@ define(['jquery',
 				this.append(title.render());
 			},
 
-			addAll: function(){
-				Game.each(this.proxy(this.addOne));
+			addAll: function(items){
+				this.el.empty();
+				items.each(this.proxy(this.addOne));
+			},
+
+			getAll: function(){
+				return Game;
 			},
 
 			getOwned: function(){
