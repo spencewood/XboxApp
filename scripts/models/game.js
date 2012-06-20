@@ -5,7 +5,16 @@ define(['jquery',
 		var Game = Spine.Model.sub();
 		Game.configure('Game', 'id', 'title', 'votes', 'owned');
 
-		//private
+		//example data:
+		// {
+		// api_id: "36",
+		// id: "1258",
+		// owned: "0",
+		// title: "test game",
+		// votes: "0"
+		// };
+
+		//private methods
 		var connect = function(method, cb, data, options){
 			Game.trigger(method);
 			if(options && options.disableAjax){
@@ -24,6 +33,16 @@ define(['jquery',
 					console.log(e);
 				}
 			});
+		};
+
+		var scrubGameData = function(game){
+			//return game data with correct data types
+			return {
+				id: parseInt(game.id, 10),
+				owned: game.id == "1" ? true : false,
+				title: game.title,
+				votes: parseInt(game.votes, 10)
+			};
 		};
 
 		//instance methods
@@ -55,6 +74,10 @@ define(['jquery',
 			fetch: function(options, cb){
 				connect('getgames', function(records){
 					if(records){
+						//need to scrub all of the fields for each record
+						for(var i=0;i<records.length;i++){
+							records[i] = scrubGameData(records[i]);
+						}
 						Game.refresh(records);
 					}
 					if(cb){

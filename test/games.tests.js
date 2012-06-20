@@ -4,17 +4,23 @@ define(['app/controllers/games',
 	'app/models/game',
 	'app/models/daily',
 	'app/helpers/date',
+	'app/settings',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Games, GameTitle, Dailies, Game, Daily, datetool){
+	function(Games, GameTitle, Dailies, Game, Daily, datetool, settings){
 		describe('Games', function(){
 			//setup two games for testing most actions
 			var ownedGame = new Game({title: 'Owned', votes: 2, owned: true});
 			var unownedGame = new Game({title: 'UnOwned', votes: 2, owned: false});
+			var server = sinon.fakeServer.create();
 
 			describe('Model', function(){
 				beforeEach(function(){
 					Game.deleteAll();
+				});
+
+				afterEach(function(){
+					server.restore();
 				});
 
 				it('returns all games when requesting all', function(){
@@ -39,15 +45,13 @@ define(['app/controllers/games',
 					expect(ownedGame.save({disableAjax: true})).to.not.be(null);
 				});
 
-				//it('calls create ajax method when saving', function(){
-					//ownedGame.save({disableAjax: true});
-				
-				//});
+				it('scrubs game data after coming back from service', function(){
+					//fill out
+				});
 			});
 
 			describe('Controller', function(){
-				var g = new Games({el: "#games"}),
-					server = sinon.fakeServer.create();
+				var g = new Games({el: "#games"});
 
 				before(function(){
 					//contructor contains event binding for daily
@@ -186,22 +190,6 @@ define(['app/controllers/games',
 					expect(Game.all().length).to.be(2);
 					g.addAll();
 					expect(g.addOne.calledTwice).to.be(true);
-				});
-			});
-
-			describe('Integration', function(){
-				var g = new Games({el: "#games"});
-
-				beforeEach(function(){
-					$("#games").empty();
-				});
-
-				it('adds correct number of games to the page', function(){
-					ownedGame.save({disableAjax: true});
-					unownedGame.save({disableAjax: true});
-
-					g.addAll();
-					expect($('#games').find('li').size()).to.be(2);
 				});
 			});
 		});

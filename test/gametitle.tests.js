@@ -74,39 +74,6 @@ define(['app/controllers/gametitle',
 					expect(t.item.owned).to.be(true);
 				});
 			});
-
-			describe('Integration', function(){
-				var title = null,
-					game = null;
-				before(function(){
-					$("#games").empty();
-				});
-
-				beforeEach(function(done){
-					game = new Game({title: 'test game'}).save({disableAjax: true});
-					title = new GameTitle({item: game});
-					done();
-				});
-
-				afterEach(function(){
-					Game.deleteAll();
-					$("#games").empty();
-				});
-
-				it('sets vote when clicking on vote button for this game', function(){
-					title.render();
-					var spy = sinon.spy(title, 'vote');
-					$("#games li:first .vote-action").click();
-					expect(title.vote.called).to.be(true);
-				});
-
-				it('sets owned when clicking on the owned button for this game', function(){
-					title.render();
-					var spy = sinon.spy(title, 'setOwned');
-					$("#games li:first .vote-action").click();
-					expect(title.setOwned.called).to.be(true);
-				});
-			});
 		});
 	}
 );
