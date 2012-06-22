@@ -2,6 +2,10 @@ define(['jquery',
 	'app/settings',
 	'app/lib/spine/spine'],
 	function($, settings){
+		if(window.Game){
+			return window.Game;
+		}
+
 		var Game = Spine.Model.sub();
 		Game.configure('Game', 'id', 'title', 'votes', 'owned');
 
@@ -76,8 +80,8 @@ define(['jquery',
 		//static methods
 		Game.extend({
 			clear: function(options, cb){
-				connect('cleargames', cb, null, options);
 				Game.deleteAll();
+				connect('cleargames', cb, null, options);
 			},
 
 			fetch: function(options, cb){
@@ -95,7 +99,9 @@ define(['jquery',
 				}, null, options);
 			}
 		});
-	
+
+		//attaching to window because controllers need an identical reference
+		window.Game = Game;
 
 		return Game;
 	}

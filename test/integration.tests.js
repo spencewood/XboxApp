@@ -1,4 +1,5 @@
-define(['app/controllers/games',
+define(['app/controllers/home',
+	'app/controllers/games',
 	'app/controllers/gametitle',
 	'app/controllers/dailies',
 	'app/models/daily',
@@ -6,7 +7,7 @@ define(['app/controllers/games',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Games, GameTitle, Dailies, Daily, Game, dateTool){
+	function(Home, Games, GameTitle, Dailies, Daily, Game, dateTool){
 		describe('Integration', function(){
 			var title = null,
 				game = new Game({title: 'test game', owned: true}).save({disableAjax: true});
@@ -54,6 +55,19 @@ define(['app/controllers/games',
 
 			it('will fire add game event when pressing enter in the add game input field', function(){
 				//cant actually test simulating pressing enter in an input. let's trust it.
+			});
+
+			it('submits the game when the submit button is pressed', function(){
+				var spy = sinon.spy(Home, 'addGameEvent');
+				$('#addGame').val('test game');
+				$('#submitAddGame').click();
+				expect(Home.addGameEvent.called).to.be(true);
+			});
+
+			it('clears games when clicking the clear games link', function(){
+				$("#clearGames").click();
+				expect($("#games li").size()).to.be(0);
+				expect(Game.all().length).to.be(0);
 			});
 		});
 	}

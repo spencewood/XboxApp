@@ -15,7 +15,8 @@ define(['jquery',
 				Game.bind('create', Dailies.setToday);
 				Game.bind('vote', Dailies.setToday);
 				Game.bind('refresh', this.proxy(this.addSelected));
-				Game.bind('clear', this.proxy(this.addSelected));
+				Game.bind('cleargames', this.proxy(this.addSelected));
+				Game.bind('create', this.proxy(this.addSelected));
 
 				var self = this;
 				this.routes({

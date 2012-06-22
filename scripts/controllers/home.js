@@ -6,7 +6,9 @@ define(['jquery',
 		var Home = Base.sub({
 			el: $('body'),
 			events: {
-				'keypress #addGame': 'keypressEvent'
+				'keypress #addGame': 'keypressEvent',
+				'click #clearGames': 'clear',
+				'click #submitAddGame': 'addGameEvent'
 			},
 
 			elements: {
@@ -19,6 +21,11 @@ define(['jquery',
 					e.preventDefault();
 					this.addGame(this.addGameInput.val());
 				}
+			},
+
+			addGameEvent: function(e){
+				e.preventDefault();
+				this.addGame(this.addGameInput.val());
 			},
 
 			addGame: function(title, options){
