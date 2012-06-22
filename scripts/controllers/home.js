@@ -6,7 +6,7 @@ define(['jquery',
 		var Home = Base.sub({
 			el: $('body'),
 			events: {
-				'keyup #addGame': 'keyupEvent'
+				'keypress #addGame': 'keypressEvent'
 			},
 
 			elements: {
@@ -14,17 +14,17 @@ define(['jquery',
 				'#addGameSubmit': 'addGameSubmit'
 			},
 
-			keyupEvent: function(e){
-				console.log(e);
-				e.preventDefault();
+			keypressEvent: function(e){
 				if(e.keyCode === 13){
+					e.preventDefault();
 					this.addGame(this.addGameInput.val());
 				}
 			},
 
 			addGame: function(title, options){
-				if(!Game.titleExists(title) && this.canVote() && Dailies.isOpen()){
-					new Game({ title: title }).save(options);
+				var game = new Game({ title: title });
+				if(this.canVote() && Dailies.isOpen() && !game.validate()){
+					game.save();
 					return true;
 				}
 				return false;

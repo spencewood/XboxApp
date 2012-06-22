@@ -74,7 +74,7 @@ define(['app/controllers/games',
 						return true;
 					});
 
-					new Game().save({disableAjax: true});
+					new Game({title: 's'}).save({disableAjax: true});
 
 					stub.restore();
 				});
@@ -101,10 +101,10 @@ define(['app/controllers/games',
 					//add some unowned games
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
-					new Game({votes: 1, owned: false}).save({disableAjax: true});
-					new Game({votes: 50, owned: false}).save({disableAjax: true});
-					new Game({votes: 15, owned: false}).save({disableAjax: true});
-					new Game({votes: 7, owned: false}).save({disableAjax: true});
+					new Game({title: 'a', votes: 1, owned: false}).save({disableAjax: true});
+					new Game({title: 'b', votes: 50, owned: false}).save({disableAjax: true});
+					new Game({title: 'c', votes: 15, owned: false}).save({disableAjax: true});
+					new Game({title: 'd', votes: 7, owned: false}).save({disableAjax: true});
 					
 					var unowned = Games.getUnowned();
 

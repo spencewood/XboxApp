@@ -39,7 +39,7 @@ define(['jquery',
 			//return game data with correct data types
 			return {
 				id: parseInt(game.id, 10),
-				owned: game.id == "1" ? true : false,
+				owned: game.id === "1",
 				title: game.title,
 				votes: parseInt(game.votes, 10)
 			};
@@ -61,6 +61,15 @@ define(['jquery',
 			save: function(options, cb){
 				connect('addnewgame', cb, {title: this.title}, options);
 				return Game.__super__.save.call(this);
+			},
+
+			validate: function(){
+				if(this.title === undefined || this.title.replace(/\s/g, '').length === 0){
+					return "Game title must have a value";
+				}
+				if(Game.findByAttribute('title', this.title) !== null){
+					return "Game title already exists";
+				}
 			}
 		});
 
@@ -84,10 +93,6 @@ define(['jquery',
 						cb();
 					}
 				}, null, options);
-			},
-
-			titleExists: function(title){
-				return Game.findByAttribute('title', title) !== null;
 			}
 		});
 	

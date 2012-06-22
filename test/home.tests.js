@@ -60,6 +60,14 @@ define(['app/controllers/Home',
 
 				expect(Games.getOwned().length).to.be(0);
 			});
+
+			it('does not allow games with blank titles to be added', function(){
+				expect(new Game({title: ''}).save({disableAjax: true})).to.be(false);
+			});
+
+			it('does not allow just spaces to be added as a game title', function(){
+				expect(new Game({title: '    '}).save({disableAjax: true})).to.be(false);
+			});
 		});
 	}
 );
