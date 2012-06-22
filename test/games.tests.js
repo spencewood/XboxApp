@@ -53,12 +53,7 @@ define(['app/controllers/games',
 			});
 
 			describe('Controller', function(){
-				var g = new Games({el: "#games"}),
-					h = new Home({el: 'body'});
-
 				before(function(){
-					//contructor contains event binding for daily
-					new Dailies();
 				});
 
 				afterEach(function(done){
@@ -88,18 +83,18 @@ define(['app/controllers/games',
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 
-					expect(g.getOwned().length).to.be(1);
-					expect(g.getOwned()[0].toJSON()).to.have.key('title');
-					expect(g.getOwned()[0].toJSON().title).to.be('Owned');
+					expect(Games.getOwned().length).to.be(1);
+					expect(Games.getOwned()[0].toJSON()).to.have.key('title');
+					expect(Games.getOwned()[0].toJSON().title).to.be('Owned');
 				});
 
 				it('returns only unowned (wanted) games when getting unowned games', function(){
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 
-					expect(g.getUnowned().length).to.be(1);
-					expect(g.getUnowned()[0].toJSON()).to.have.key('title');
-					expect(g.getUnowned()[0].toJSON().title).to.be('UnOwned');
+					expect(Games.getUnowned().length).to.be(1);
+					expect(Games.getUnowned()[0].toJSON()).to.have.key('title');
+					expect(Games.getUnowned()[0].toJSON().title).to.be('UnOwned');
 				});
 
 				it('returns wanted games in descending order by vote count', function(){
@@ -111,7 +106,7 @@ define(['app/controllers/games',
 					new Game({votes: 15, owned: false}).save({disableAjax: true});
 					new Game({votes: 7, owned: false}).save({disableAjax: true});
 					
-					var unowned = g.getUnowned();
+					var unowned = Games.getUnowned();
 
 					expect(unowned[0].votes).to.be(1);
 					expect(unowned[unowned.length-1].votes).to.be(50);
@@ -124,7 +119,7 @@ define(['app/controllers/games',
 					new Game({title: 'a', owned: true}).save({disableAjax: true});
 					new Game({title: 'AB', owned: true}).save({disableAjax: true});
 
-					var owned = g.getOwned();
+					var owned = Games.getOwned();
 
 					expect(owned[0].title).to.be('a');
 					expect(owned[owned.length-1].title).to.be('z');
@@ -146,12 +141,12 @@ define(['app/controllers/games',
 				});
 
 				it('calls the addOne rendering for all viewable games', function(){
-					sinon.spy(g, 'addOne');
+					sinon.spy(Games, 'addOne');
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 					expect(Game.all().length).to.be(2);
-					g.addSelected();
-					expect(g.addOne.calledTwice).to.be(true);
+					Games.addSelected();
+					expect(Games.addOne.calledTwice).to.be(true);
 				});
 			});
 		});

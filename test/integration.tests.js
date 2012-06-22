@@ -17,8 +17,7 @@ define(['app/controllers/games',
 
 			beforeEach(function(){
 				game.save({disableAjax: true});
-				var games = new Games({el: $('#games')});
-				games.addSelected();
+				Games.addSelected();
 			});
 
 			afterEach(function(){
@@ -32,9 +31,8 @@ define(['app/controllers/games',
 
 			it('cleans up the games list before adding new ones', function(){
 				$('#games').append($('<li>', {text: 'test'}));
-				var games = new Games({el: $('#games')});
-				games.addSelected();
-				games.addSelected();
+				Games.addSelected();
+				Games.addSelected();
 				expect($('#games li.game').size()).to.be(1);
 			});
 

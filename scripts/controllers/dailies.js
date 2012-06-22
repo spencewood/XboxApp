@@ -3,12 +3,9 @@ define(['app/models/daily',
  'app/helpers/date',
  'app/lib/spine/spine'],
 	function(Daily, Game, dateTool){
-		var Dailies = Spine.Controller.sub({
-			init: function(){
-			}
-		});
+		var Dailies = Spine.Controller.sub();
 
-		//static methods
+		//static
 		Dailies.extend({
 			isOpen: function(){
 				var daily = Daily.findByAttribute('day', dateTool.getFormattedString());

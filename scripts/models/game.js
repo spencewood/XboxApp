@@ -85,7 +85,7 @@ define(['jquery',
 					}
 				}, null, options);
 			},
-			
+
 			titleExists: function(title){
 				return Game.findByAttribute('title', title) !== null;
 			}

@@ -10,12 +10,9 @@ define(['app/controllers/Home',
 	'sinon/sinon'],
 	function(Home, Games, GameTitle, Dailies, Game, Daily, datetool, settings){
 		describe('Home', function(){
-			var h = new Home({el: 'body'}),
-				g = new Games({el: '#games'});
-
 			before(function(){
-				//contructor contains event binding for daily
-				new Dailies();
+				Daily.deleteAll();
+				Game.deleteAll();
 			});
 
 			afterEach(function(done){
@@ -26,11 +23,11 @@ define(['app/controllers/Home',
 
 			it('does not allow duplicate titles', function(){
 				var addAGame = function(){
-					return h.addGame('test game', {disableAjax: true});
+					return Home.addGame('test game', {disableAjax: true});
 				};
 
 				//add a game
-				addAGame();
+				expect(addAGame()).to.be(true);
 				//clear our daily allowance
 				Daily.deleteAll();
 
@@ -40,7 +37,7 @@ define(['app/controllers/Home',
 
 			it('only allows adding one game title per day', function(){
 				var addAGame = function(){
-					return h.addGame('test game', {disableAjax: true});
+					return Home.addGame('test game', {disableAjax: true});
 				};
 
 				//add a game
@@ -53,15 +50,15 @@ define(['app/controllers/Home',
 			it('will not allow adding of game title if a vote has been made', function(){
 				Dailies.setToday();
 
-				expect(h.addGame('test game', {disableAjax: true})).to.be(false);
+				expect(Home.addGame('test game', {disableAjax: true})).to.be(false);
 			});
 
 			it('is able to clear all games', function(){
 				new Game({title: 'test game', owned: true}).save({disableAjax: true});
 
-				h.clear({disableAjax: true});
+				Home.clear({disableAjax: true});
 
-				expect(g.getOwned().length).to.be(0);
+				expect(Games.getOwned().length).to.be(0);
 			});
 		});
 	}
