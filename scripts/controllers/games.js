@@ -8,6 +8,7 @@ define(['jquery',
 	'app/lib/spine/route'],
 	function($, Base, GameTitle, Dailies, Game, sort){
 		var Games = Spine.Controller.sub({
+			el: $('#games'),
 			show: 'All',
 
 			init: function(){
@@ -27,13 +28,15 @@ define(['jquery',
 						self.fetchOrShow();
 					}
 				});
+			},
+
+			fetch: function(){
 				Game.fetch();
-				//this.fetchOrShow();
 			},
 
 			fetchOrShow: function(){
 				if(Game.all().length === 0){
-					Game.fetch();
+					this.fetch();
 				}
 			},
 
@@ -64,6 +67,6 @@ define(['jquery',
 			}
 		});
 
-		return Games;
+		return new Games();
 	}
 );

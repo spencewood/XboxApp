@@ -7,11 +7,9 @@ requirejs.config({
 require(['jquery',
 	'controllers/games',
 	'controllers/home',
-	'models/game',
 	'lib/spine/spine',
 	'lib/bootstrap'],
-	function($, Games, Home, Game){
-		new Games({el: $('#games')});
-		new Home({el: $('body')});
+	function($, Games, Home){
+		Games.fetch();
 	}
 );

@@ -4,6 +4,7 @@ define(['jquery',
 	'app/models/game'],
 	function($, Base, Dailies, Game){
 		var Home = Base.sub({
+			el: $('body'),
 			events: {
 				'keyup #addGame': 'keyupEvent'
 			},
@@ -34,6 +35,6 @@ define(['jquery',
 			}
 		});
 
-		return Home;
+		return new Home();
 	}
 );
