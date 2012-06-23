@@ -69,6 +69,11 @@ define(['app/controllers/home',
 				expect($("#games li").size()).to.be(0);
 				expect(Game.all().length).to.be(0);
 			});
+
+			it('shows an error on the screen if validation fails', function(){
+				$('#submitAddGame').click();
+				expect($("#errorMessage").val().length > 0);
+			});
 		});
 	}
 );

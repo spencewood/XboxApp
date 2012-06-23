@@ -13,6 +13,10 @@ define(['app/helpers/date'],
 					case 0: //Sunday
 						return false;
 				}
+			},
+
+			validate: function(){
+				return this.canVote() ? '' : 'Adding games and voting is not allowed on weekends';
 			}
 		});
 

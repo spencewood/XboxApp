@@ -7,13 +7,15 @@ define(['jquery',
 			el: $('body'),
 			events: {
 				'keypress #addGame': 'keypressEvent',
-				'click #clearGames': 'clear',
+				'click #clearGames': 'clearEvent',
 				'click #submitAddGame': 'addGameEvent'
 			},
 
 			elements: {
 				'#addGame': 'addGameInput',
-				'#addGameSubmit': 'addGameSubmit'
+				'#addGameSubmit': 'addGameSubmit',
+				'#errorMessage': 'errorMessage',
+				'#globalError': 'globalError'
 			},
 
 			keypressEvent: function(e){
@@ -28,9 +30,14 @@ define(['jquery',
 				this.addGame(this.addGameInput.val());
 			},
 
+			clearEvent: function(e){
+				e.preventDefault();
+				this.clear();
+			},
+
 			addGame: function(title, options){
 				var game = new Game({ title: title });
-				if(this.canVote() && Dailies.isOpen() && !game.validate()){
+				if(this.showError(this.validate() || Dailies.validate() || game.validate())){
 					game.save();
 					return true;
 				}
@@ -39,6 +46,19 @@ define(['jquery',
 
 			clear: function(options){
 				Game.clear(options);
+			},
+
+			showError: function(error){
+				if(error && error.length){
+					this.errorMessage.text(error);
+					this.globalError.addClass('error');
+					return false;
+				}
+				else{
+					this.errorMessage.empty();
+					this.globalError.removeClass('error');
+					return true;
+				}
 			}
 		});
 

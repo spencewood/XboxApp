@@ -12,8 +12,13 @@
 			</ul>
 			<a href="#" id="clearGames">clear</a>
 			<form class="well form-inline">
-				<input type="text" class="span3" placeholder="Game title" id="addGame" />
-				<button type="submit" class="btn" id="submitAddGame">Submit</button>
+				<fieldset id="globalError" class="control-group">
+					<div class="controls">
+						<input type="text" class="span3" placeholder="Game title" id="addGame" />
+						<button type="submit" class="btn" id="submitAddGame">Submit</button>
+						<span id="errorMessage" class="help-block"></span>
+					</div>
+				</fieldset>
 			</form>
 			<ul id="games">
 			</ul>

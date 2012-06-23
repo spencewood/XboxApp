@@ -11,8 +11,13 @@ define(['app/controllers/Home',
 	function(Home, Games, GameTitle, Dailies, Game, Daily, datetool, settings){
 		describe('Home', function(){
 			before(function(){
+				//stub a weekday to get through tests
+				sinon.stub(Home, 'getDate', function(){
+					return new Date('1-2-2012'); //Monday
+				});
 				Daily.deleteAll();
 				Game.deleteAll();
+				
 			});
 
 			afterEach(function(done){
@@ -48,7 +53,7 @@ define(['app/controllers/Home',
 			});
 
 			it('will not allow adding of game title if a vote has been made', function(){
-				Dailies.setToday();
+				Home.addGame('test game', {disableAjax: true});
 
 				expect(Home.addGame('test game', {disableAjax: true})).to.be(false);
 			});

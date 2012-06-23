@@ -12,6 +12,10 @@ define(['app/models/daily',
 				return daily === null;
 			},
 
+			validate: function(){
+				return Dailies.isOpen ? '' : 'Cannot vote or add a game more than once a day';
+			},
+
 			setToday: function(){
 				if(Dailies.isOpen()){
 					new Daily({day: dateTool.getFormattedString(), added: new Date()}).save();
