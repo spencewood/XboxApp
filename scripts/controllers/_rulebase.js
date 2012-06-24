@@ -1,8 +1,13 @@
-define(['app/helpers/date'],
-	function(dateTool){
+define(['app/models/AdminSetting',
+	'app/helpers/date'],
+	function(AdminSetting, dateTool){
+		AdminSetting.fetch();
 		var base = Spine.Controller.sub({
 			canVote: function(){
-					switch(this.getDate().getDay()){
+				if(AdminSetting.findByAttribute('setting','voteweekend')){
+					return true;
+				}
+				switch(this.getDate().getDay()){
 					case 1: //Monday
 					case 2: //Tuesday
 					case 3: //Wednesday

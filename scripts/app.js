@@ -4,12 +4,12 @@ requirejs.config({
 	}
 });
 
-require(['jquery',
+require(['controllers/home',
 	'controllers/games',
-	'controllers/home',
+	'lib/handlebars',
 	'lib/spine/spine',
 	'lib/bootstrap'],
-	function($, Games, Home){
+	function(Home, Games){
 		Games.fetch();
 	}
 );

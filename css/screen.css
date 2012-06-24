@@ -1,0 +1,29 @@
+header{
+	background-color: #2E9FFF;
+	padding: 50px 0 25px;
+}
+
+nav{
+	float: right;
+	color: #fff;
+}
+
+nav a{
+	color: #fff;
+}
+
+.container{
+	max-width: 960px;
+}
+
+body.home #content .home-content,
+body.admin #content .admin-content{
+	display: block;
+}
+
+body #content .home-content,
+body #content .admin-content,
+body.home #content .admin-content,
+body.admin #content .home-content{
+	display: none;
+}

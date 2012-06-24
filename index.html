@@ -2,26 +2,44 @@
 <html lang="en">
 	<head>
 		<title>Xbox Voting App</title>
-	    <link href="/css/bootstrap.css" rel="stylesheet">
-	    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+	    <link href="/css/bootstrap.css" rel="stylesheet"/>
+	    <link href="/css/bootstrap-responsive.css" rel="stylesheet"/>
+	    <link href="/css/screen.css" rel="stylesheet"/>
 	</head>
 	<body>
+		<header>
+			<div class="container">
+				<nav>
+					<ul class="nav nav-pills">
+						<li>
+							<a href="#">Home</a>
+						</li>
+						<li>
+							<a href="#/admin">Admin</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
 		<div class="container">
-			<ul class="nav nav-pills">
-				<a href="#">Home</a>
-			</ul>
-			<a href="#" id="clearGames">clear</a>
-			<form class="well form-inline">
-				<fieldset id="globalError" class="control-group">
-					<div class="controls">
-						<input type="text" class="span3" placeholder="Game title" id="addGame" />
-						<button type="submit" class="btn" id="submitAddGame">Submit</button>
-						<span id="errorMessage" class="help-block"></span>
-					</div>
-				</fieldset>
-			</form>
-			<ul id="games">
-			</ul>
+			<div id="content">
+				<div class="home-content">
+					<form class="well form-inline">
+						<fieldset id="globalError" class="control-group">
+							<div class="controls">
+								<input type="text" class="span3" placeholder="Game title" id="addGame" />
+								<button type="submit" class="btn" id="submitAddGame">Submit</button>
+								<span id="errorMessage" class="help-block"></span>
+							</div>
+						</fieldset>
+					</form>
+					<ul id="games">
+					</ul>
+				</div>
+				<div class="admin-content">
+					
+				</div>
+			</div>
 		</div>
 		<script data-main="scripts/app" src="scripts/lib/require-jquery.js"></script>
 	</body>

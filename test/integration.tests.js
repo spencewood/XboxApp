@@ -4,10 +4,11 @@ define(['app/controllers/home',
 	'app/controllers/dailies',
 	'app/models/daily',
 	'app/models/game',
+	'app/models/adminsetting',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Home, Games, GameTitle, Dailies, Daily, Game, dateTool){
+	function(Home, Games, GameTitle, Dailies, Daily, Game, AdminSetting, dateTool){
 		describe('Integration', function(){
 			var title = null,
 				game = new Game({title: 'test game', owned: true}).save({disableAjax: true});
@@ -19,6 +20,7 @@ define(['app/controllers/home',
 			beforeEach(function(){
 				game.save({disableAjax: true});
 				Games.addSelected();
+				AdminSetting.destroyAll();
 			});
 
 			afterEach(function(){
@@ -73,6 +75,13 @@ define(['app/controllers/home',
 			it('shows an error on the screen if validation fails', function(){
 				$('#submitAddGame').click();
 				expect($("#errorMessage").val().length > 0);
+			});
+
+			it('saves local settings when checking the checkboxes in the admin area', function(){
+				var cb = $('#content .admin-content :checkbox:first');
+				cb.click();
+				expect(AdminSetting.all().length).to.be(1);
+				expect(AdminSetting.first().setting).to.be(cb.data('setting'));
 			});
 		});
 	}

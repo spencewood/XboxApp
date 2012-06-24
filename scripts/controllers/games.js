@@ -20,11 +20,15 @@ define(['jquery',
 
 				var self = this;
 				this.routes({
-					'/owned': function(params){
+					'/games/all': function(){
+						self.show = 'All';
+						self.fetchOrShow();
+					},
+					'/games/owned': function(){
 						self.show = 'Owned';
 						self.fetchOrShow();
 					},
-					'/wanted': function(params){
+					'/games/wanted': function(){
 						self.show = 'Unowned';
 						self.fetchOrShow();
 					}
