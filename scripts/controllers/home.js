@@ -5,7 +5,8 @@ define(['jquery',
 	'app/models/adminsetting',
 	'app/lib/text!app/views/admin.tpl',
 	'app/lib/spine/spine',
-	'app/lib/spine/route'],
+	'app/lib/spine/route',
+	'app/lib/handlebars'],
 	function($, Base, Dailies, Game, AdminSetting, adminTemplate){
 		var adminTmpl = Handlebars.compile(adminTemplate);
 
@@ -38,7 +39,7 @@ define(['jquery',
 				});
 				
 				Spine.Route.setup();
-				
+
 				AdminSetting.fetch();
 
 				this.renderAdminSection();
@@ -102,8 +103,8 @@ define(['jquery',
 
 			addGame: function(title, options){
 				var game = new Game({ title: title });
-				if(this.showError(this.validate() || Dailies.validate() || game.validate())){
-					game.save();
+				if(!this.showError(this.validate() || Dailies.validate() || game.validate())){
+					game.save(options);
 					this.addGameInput.val('');
 					return true;
 				}
@@ -118,12 +119,12 @@ define(['jquery',
 				if(error && error.length){
 					this.errorMessage.text(error);
 					this.globalError.addClass('error');
-					return false;
+					return true;
 				}
 				else{
 					this.errorMessage.empty();
 					this.globalError.removeClass('error');
-					return true;
+					return false;
 				}
 			}
 		});

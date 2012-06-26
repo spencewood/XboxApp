@@ -1,10 +1,11 @@
 define(['app/controllers/_rulebase',
 	'app/controllers/dailies',
 	'app/models/daily',
+	'app/models/adminsetting',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Base, Dailies, Daily, dateTool){
+	function(Base, Dailies, Daily, AdminSetting, dateTool){
 		describe('Application', function(){
 			
 			describe('Voting rules', function(){
@@ -12,6 +13,7 @@ define(['app/controllers/_rulebase',
 				beforeEach(function(done){
 					t = new Base();
 					Daily.deleteAll();
+					AdminSetting.deleteAll();
 					done();
 				});
 

@@ -17,6 +17,10 @@ define(['app/controllers/games',
 			var server = sinon.fakeServer.create();
 
 			describe('Model', function(){
+				before(function(){
+					Game.unbind('addnewgame');
+				});
+
 				beforeEach(function(){
 					Game.deleteAll();
 				});
@@ -32,13 +36,13 @@ define(['app/controllers/games',
 				});
 
 				it('supports find all by attribute', function(){
-					ownedGame.save( {disableAjax: true});
+					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 					expect(Game.findAllByAttribute('votes', 2).length).to.be(2);
 				});
 
 				it('returns games with correct vote value', function(){
-					ownedGame.save( {disableAjax: true});
+					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 					expect(Game.first().votes).to.be(2);
 				});
@@ -54,6 +58,7 @@ define(['app/controllers/games',
 
 			describe('Controller', function(){
 				before(function(){
+					Game.unbind('addnewgame');
 				});
 
 				afterEach(function(done){
@@ -148,6 +153,8 @@ define(['app/controllers/games',
 					Games.addSelected();
 					expect(Games.addOne.called).to.be(true);
 				});
+
+				//need to test on getting the games list again after adding one since we have no initial id
 			});
 		});
 	}

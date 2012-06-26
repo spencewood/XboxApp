@@ -14,35 +14,34 @@ define(['app/controllers/home',
 				game = new Game({title: 'test game', owned: true}).save({disableAjax: true});
 
 			before(function(){
-				$('#games').empty();
 			});
 
 			beforeEach(function(){
-				game.save({disableAjax: true});
-				Games.addSelected();
-				AdminSetting.destroyAll();
+				Home.addGame('test game', {disableAjax: true});
+				AdminSetting.deleteAll();
 			});
 
 			afterEach(function(){
 				Game.deleteAll();
+				Daily.deleteAll();
 				$('#games').empty();
 			});
 
 			it('adds correct number of games to the page', function(){
-				expect($('#games').find('li').size()).to.be(1);
+				expect($('#games').find('tr').size()).to.be(1);
 			});
 
 			it('cleans up the games list before adding new ones', function(){
-				$('#games').append($('<li>', {text: 'test'}));
+				$('#games').append($('<tr>', {text: 'test'}));
 				Games.addSelected();
 				Games.addSelected();
-				expect($('#games li.game').size()).to.be(1);
+				expect($('#games tr.game').size()).to.be(1);
 			});
 
 			it('sets vote when clicking on vote button for this game', function(){
 				var spy = sinon.spy(GameTitle.prototype, 'voteEvent');
 				var stub = sinon.stub(GameTitle.prototype, 'vote', function(){});
-				$('#games li:first .vote-action').click();
+				$('#games tr:first .vote-action').click();
 				expect(GameTitle.prototype.voteEvent.called).to.be(true);
 				stub.restore();
 			});
@@ -50,7 +49,7 @@ define(['app/controllers/home',
 			it('calls setOwnedEvent when clicking on the owned button for this game', function(){
 				var spy = sinon.spy(GameTitle.prototype, 'setOwnedEvent');
 				var stub = sinon.stub(GameTitle.prototype, 'setOwned', function(){});
-				$('#games li:first .owned-action').click();
+				$('#games tr:first .owned-action').click();
 				expect(GameTitle.prototype.setOwnedEvent.called).to.be(true);
 				stub.restore();
 			});
@@ -68,7 +67,7 @@ define(['app/controllers/home',
 
 			it('clears games when clicking the clear games link', function(){
 				$("#clearGames").click();
-				expect($("#games li").size()).to.be(0);
+				expect($("#games tr").size()).to.be(0);
 				expect(Game.all().length).to.be(0);
 			});
 
@@ -77,12 +76,12 @@ define(['app/controllers/home',
 				expect($("#errorMessage").val().length > 0);
 			});
 
-			it('saves local settings when checking the checkboxes in the admin area', function(){
-				var cb = $('#content .admin-content :checkbox:first');
-				cb.click();
-				expect(AdminSetting.all().length).to.be(1);
-				expect(AdminSetting.first().setting).to.be(cb.data('setting'));
-			});
+			// it('saves local settings when checking the checkboxes in the admin area', function(){
+			// 	var cb = $('#content .admin-content :checkbox:first');
+			// 	cb.click();
+			// 	expect(AdminSetting.all().length).to.be(1);
+			// 	expect(AdminSetting.first().setting).to.be(cb.data('setting'));
+			// });
 		});
 	}
 );

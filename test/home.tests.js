@@ -15,6 +15,7 @@ define(['app/controllers/Home',
 				sinon.stub(Home, 'getDate', function(){
 					return new Date('1-2-2012'); //Monday
 				});
+				Game.unbind('addnewgame');
 				Daily.deleteAll();
 				Game.deleteAll();
 				

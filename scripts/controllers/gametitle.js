@@ -9,7 +9,7 @@ define(['jquery',
 
 		//instance
 		var GameTitle = Base.sub({
-			tag: 'li',
+			tag: 'tr',
 			className: 'game',
 			events: {
 				'click .vote-action': 'voteEvent',
@@ -26,8 +26,7 @@ define(['jquery',
 				if(item){
 					this.item = item;
 				}
-				this.html(this.template(this.item));
-				return this;
+				return this.html(this.template(this.item));
 			},
 
 			template: function(items){

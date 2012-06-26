@@ -20,19 +20,23 @@ define(['jquery',
 
 		//private methods
 		var connect = function(method, cb, data, options){
-			Game.trigger(method);
-			if(options && options.disableAjax){
+			var handleCallBack = function(records){
 				if(cb){
-					cb();
+					cb(records);
 				}
-				return;
+				Game.trigger(method);
+				return records;
+			};
+
+			if(options && options.disableAjax){
+				return handleCallBack();
 			}
 			data = $.extend(data || {}, {apiKey: settings.apiKey});
 			$.ajax({
 				url: [settings.votingServiceUrl, method].join('/'),
 				dataType: 'jsonp',
 				data: data,
-				success: cb,
+				success: handleCallBack,
 				error: function(e){
 					console.log(e);
 				}
@@ -43,7 +47,7 @@ define(['jquery',
 			//return game data with correct data types
 			return {
 				id: parseInt(game.id, 10),
-				owned: game.id === "1",
+				owned: game.owned === "1",
 				title: game.title,
 				votes: parseInt(game.votes, 10)
 			};
@@ -63,8 +67,8 @@ define(['jquery',
 
 			//override spine's save method because we aren't using REST
 			save: function(options, cb){
+				Game.__super__.save.call(this);
 				connect('addnewgame', cb, {title: this.title}, options);
-				return Game.__super__.save.call(this);
 			},
 
 			validate: function(){

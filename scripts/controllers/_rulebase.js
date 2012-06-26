@@ -4,7 +4,8 @@ define(['app/models/AdminSetting',
 		AdminSetting.fetch();
 		var base = Spine.Controller.sub({
 			canVote: function(){
-				if(AdminSetting.findByAttribute('setting','voteweekend')){
+				var setting = AdminSetting.findByAttribute('setting','voteweekend');
+				if(setting && setting.length){
 					return true;
 				}
 				switch(this.getDate().getDay()){

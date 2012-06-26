@@ -23,6 +23,11 @@ define(['app/controllers/gametitle',
 
 			describe('Voting', function(){
 				var t = null;
+
+				before(function(){
+					Game.unbind('addnewgame');
+				});
+				
 				beforeEach(function(done){
 					t = new GameTitle({item: new Game({title: 'game', owned: false})});
 					Daily.deleteAll();

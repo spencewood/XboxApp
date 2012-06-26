@@ -1,1 +1,6 @@
-<span><a href="#" class="vote-action">vote<a/> <a href="#" class="owned-action">owned</a></span> {{title}}
+<td>
+	{{title}}
+</td>
+<td>
+	<button class="btn vote-action">Vote</button> <button class="btn owned-action {{#if owned}}disabled{{/if}}">Mark as owned</button>
+</td>
