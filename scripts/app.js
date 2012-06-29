@@ -10,6 +10,6 @@ require(['controllers/home',
 	'lib/spine/spine',
 	'lib/bootstrap'],
 	function(Home, Games){
-		Games.fetch();
+		//Games.fetch();
 	}
 );

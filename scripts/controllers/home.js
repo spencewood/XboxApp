@@ -25,7 +25,9 @@ define(['jquery',
 				'#addGameSubmit': 'addGameSubmit',
 				'#errorMessage': 'errorMessage',
 				'#globalError': 'globalError',
-				'#content .admin-content': 'adminContent'
+				'#content .admin-content': 'adminContent',
+				'#home-pill': 'homePill',
+				'#admin-pill': 'adminPill'
 			},
 
 			init: function(){
@@ -99,6 +101,8 @@ define(['jquery',
 
 			showPage: function(page){
 				this.el.removeClass().addClass(page);
+				this.homePill.add(this.adminPill).removeClass();
+				this[page+'Pill'].addClass('active');
 			},
 
 			addGame: function(title, options){

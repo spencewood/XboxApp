@@ -4,12 +4,22 @@ define(['jquery',
 	'app/controllers/dailies',
 	'app/models/game',
 	'app/helpers/sort',
+	'app/lib/text!app/views/all_row.tpl',
+	'app/lib/handlebars',
 	'app/lib/spine/spine',
 	'app/lib/spine/route'],
-	function($, Base, GameTitle, Dailies, Game, sort){
+	function($, Base, GameTitle, Dailies, Game, sort, all_row_template){
+		var all_row_tmpl = Handlebars.compile(all_row_template);
+
+
 		var Games = Spine.Controller.sub({
 			el: $('#games tbody'),
 			show: 'All',
+
+			elements: {
+				'#games tbody': 'rows',
+				'#tab-nav': 'tabNav'
+			},
 
 			init: function(){
 				//setting up event bindings for when the Game changes
@@ -24,19 +34,23 @@ define(['jquery',
 				//we need to get the latest list when something new since the api only returns true on addnewgame
 				Game.bind('addnewgame', this.proxy(this.fetch));
 
+				var self = this;
 				this.routes({
-					'/games/all': this.proxy(function(){
-						this.show = 'All';
-						this.fetchOrShow();
-					}),
-					'/games/owned': this.proxy(function(){
-						this.show = 'Owned';
-						this.fetchOrShow();
-					}),
-					'/games/wanted': this.proxy(function(){
-						this.show = 'Unowned';
-						this.fetchOrShow();
-					})
+					'/games/all': function(){
+						self.show = 'All';
+						self.fetchOrShow();
+						self.updateMenu();
+					},
+					'/games/owned': function(){
+						self.show = 'Owned';
+						self.fetchOrShow();
+						self.updateMenu();
+					},
+					'/games/wanted': function(){
+						self.show = 'Unowned';
+						self.fetchOrShow();
+						self.updateMenu();
+					}
 				});
 
 				Spine.Route.setup();
@@ -55,13 +69,19 @@ define(['jquery',
 				}
 			},
 
+			updateMenu: function(){
+				/*this.tabs
+					.find('li').removeClass('active').end()
+					.find('#'+this.show.toLowerCase()+'-tab').addClass('active');*/
+			},
+
 			addSelected: function(){
 				this.proxy(this.addAll(this['get'+this.show]()));
 			},
 
 			addOne: function(item){
 				var title = new GameTitle({item: item});
-				this.append(title.render());
+				this.append(title.render(all_row_tmpl));
 			},
 
 			addAll: function(items){
@@ -69,6 +89,7 @@ define(['jquery',
 				for(var i=0;i<items.length;i++){
 					this.proxy(this.addOne(items[i]));
 				}
+
 			},
 
 			getAll: function(){
@@ -80,7 +101,7 @@ define(['jquery',
 			},
 
 			getUnowned: function(){
-				return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes'));
+				return Game.findAllByAttribute('owned', false).sort(sort.byProperty('votes')).reverse();
 			}
 		});
 

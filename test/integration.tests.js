@@ -13,35 +13,33 @@ define(['app/controllers/home',
 			var title = null,
 				game = new Game({title: 'test game', owned: true}).save({disableAjax: true});
 
-			before(function(){
-			});
-
 			beforeEach(function(){
-				Home.addGame('test game', {disableAjax: true});
 				AdminSetting.deleteAll();
+				Home.addGame('test game', {disableAjax: true});
+				Games.addSelected();
 			});
 
 			afterEach(function(){
 				Game.deleteAll();
 				Daily.deleteAll();
-				$('#games').empty();
+				$('#games tbody').empty();
 			});
 
 			it('adds correct number of games to the page', function(){
-				expect($('#games').find('tr').size()).to.be(1);
+				expect($('#games tbody').find('tr').size()).to.be(1);
 			});
 
 			it('cleans up the games list before adding new ones', function(){
-				$('#games').append($('<tr>', {text: 'test'}));
+				$('#games tbody').append($('<tr>', {text: 'test'}));
 				Games.addSelected();
 				Games.addSelected();
-				expect($('#games tr.game').size()).to.be(1);
+				expect($('#games tbody tr.game').size()).to.be(1);
 			});
 
 			it('sets vote when clicking on vote button for this game', function(){
 				var spy = sinon.spy(GameTitle.prototype, 'voteEvent');
 				var stub = sinon.stub(GameTitle.prototype, 'vote', function(){});
-				$('#games tr:first .vote-action').click();
+				$('#games tbody tr:first .vote-action').click();
 				expect(GameTitle.prototype.voteEvent.called).to.be(true);
 				stub.restore();
 			});
@@ -49,7 +47,7 @@ define(['app/controllers/home',
 			it('calls setOwnedEvent when clicking on the owned button for this game', function(){
 				var spy = sinon.spy(GameTitle.prototype, 'setOwnedEvent');
 				var stub = sinon.stub(GameTitle.prototype, 'setOwned', function(){});
-				$('#games tr:first .owned-action').click();
+				$('#games tbody tr:first .owned-action').click();
 				expect(GameTitle.prototype.setOwnedEvent.called).to.be(true);
 				stub.restore();
 			});
@@ -67,8 +65,11 @@ define(['app/controllers/home',
 
 			it('clears games when clicking the clear games link', function(){
 				$("#clearGames").click();
-				expect($("#games tr").size()).to.be(0);
-				expect(Game.all().length).to.be(0);
+				setTimeout(function(){
+					expect($("#games tbody tr").size()).to.be(0);
+					expect(Game.all().length).to.be(0);
+				}, 500);
+
 			});
 
 			it('shows an error on the screen if validation fails', function(){

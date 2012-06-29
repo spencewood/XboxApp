@@ -1,12 +1,8 @@
 define(['jquery',
 	'app/controllers/_rulebase',
 	'app/controllers/dailies',
-	'app/settings',
-	'app/lib/text!app/views/gametitle.tpl',
-	'app/lib/handlebars'],
-	function($, Base, Dailies, settings, template){
-		var tmpl = Handlebars.compile(template);
-
+	'app/settings'],
+	function($, Base, Dailies, settings){
 		//instance
 		var GameTitle = Base.sub({
 			tag: 'tr',
@@ -22,15 +18,8 @@ define(['jquery',
 				}
 			},
 
-			render: function(item){
-				if(item){
-					this.item = item;
-				}
-				return this.html(this.template(this.item));
-			},
-
-			template: function(items){
-				return tmpl(items);
+			render: function(template){
+				return this.html(template(this.item));
 			},
 
 			voteEvent: function(e){

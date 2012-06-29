@@ -113,8 +113,8 @@ define(['app/controllers/games',
 					
 					var unowned = Games.getUnowned();
 
-					expect(unowned[0].votes).to.be(1);
-					expect(unowned[unowned.length-1].votes).to.be(50);
+					expect(unowned[0].votes).to.be(50);
+					expect(unowned[unowned.length-1].votes).to.be(1);
 				});
 
 				it('returns owned games in alpha order', function(){

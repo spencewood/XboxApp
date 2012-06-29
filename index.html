@@ -11,10 +11,10 @@
 			<div class="container">
 				<nav>
 					<ul class="nav nav-pills">
-						<li>
+						<li id="home-pill">
 							<a href="#">Home</a>
 						</li>
-						<li>
+						<li id="admin-pill">
 							<a href="#/admin">Admin</a>
 						</li>
 					</ul>
@@ -23,11 +23,17 @@
 		</header>
 		<div class="container">
 			<div id="content">
-				<div class="home-content">
-					<ul class="nav nav-tabs">
-						<li><a href="#/games/all">All Games</a></li>
-						<li><a href="#/games/wanted">Wanted Games</a></li>
-						<li><a href="#/games/owned">Owned Games</a></li>
+				<div class="home-content" id="games-content">
+					<ul class="nav nav-tabs" id="tab-nav">
+						<li id="all-tab">
+							<a href="#/games/all">All Games</a>
+						</li>
+						<li id="wanted-tab">
+							<a href="#/games/wanted">Wanted Games</a>
+						</li>
+						<li id="owned-tab">
+							<a href="#/games/owned">Owned Games</a>
+						</li>
 					</ul>
 					<form class="well form-inline">
 						<fieldset id="globalError" class="control-group">
