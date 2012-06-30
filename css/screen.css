@@ -16,7 +16,16 @@ nav a{
 	max-width: 960px;
 }
 
-body.home #content .home-content,
+.content.container{
+	display: none;
+	margin-top: 30px;
+}
+
+.content.container.active{
+	display: block;
+}
+
+/*body.home #content .home-content,
 body.admin #content .admin-content{
 	display: block;
 }
@@ -26,4 +35,4 @@ body #content .admin-content,
 body.home #content .admin-content,
 body.admin #content .home-content{
 	display: none;
-}
+}*/

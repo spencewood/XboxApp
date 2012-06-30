@@ -57,20 +57,25 @@ define(['jquery',
 		Game.include({
 			vote: function(options, cb){
 				connect('vote', cb, {id: this.id}, options);
-				//Spine wants to call save after updating attributes. disable.
-				this.updateAttribute('votes', this.votes + 1, {disableAjax: true});
+				this.updateAttribute('votes', this.votes + 1);
 			},
 
 			setOwned: function(options, cb){
 				connect('setgotit', cb, {id: this.id}, options);
-				//Spine wants to call save after updating attributes. disable.
-				this.updateAttribute('owned', true, {disableAjax: true});
+				this.updateAttribute('owned', true);
 			},
 
 			//override spine's save method because we aren't using REST
 			save: function(options, cb){
-				connect('addnewgame', cb, {title: this.title}, options);
-				return Game.__super__.save.call(this);
+				if(!this.exists()){
+					//custom handling of game creation here
+					connect('addnewgame', cb, {title: this.title}, options);
+				}
+				else{
+					//need to call this to fire spine events when updating
+					this.constructor.__super__.update.apply(this);
+				}
+
 			},
 
 			validate: function(){

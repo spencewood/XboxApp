@@ -6,7 +6,7 @@
 	    <link href="/css/bootstrap-responsive.css" rel="stylesheet"/>
 	    <link href="/css/screen.css" rel="stylesheet"/>
 	</head>
-	<body class="home">
+	<body>
 		<header>
 			<div class="container">
 				<nav>
@@ -21,45 +21,41 @@
 				</nav>
 			</div>
 		</header>
-		<div class="container">
-			<div id="content">
-				<div class="home-content" id="games-content">
-					<ul class="nav nav-tabs" id="tab-nav">
-						<li id="all-tab">
-							<a href="#/games/all">All Games</a>
-						</li>
-						<li id="wanted-tab">
-							<a href="#/games/wanted">Wanted Games</a>
-						</li>
-						<li id="owned-tab">
-							<a href="#/games/owned">Owned Games</a>
-						</li>
-					</ul>
-					<form class="well form-inline">
-						<fieldset id="globalError" class="control-group">
-							<div class="controls">
-								<input type="text" class="span3" placeholder="Game title" id="addGame" />
-								<button type="submit" class="btn" id="submitAddGame">Submit</button>
-								<span id="errorMessage" class="help-block"></span>
-							</div>
-						</fieldset>
-					</form>
-					<table id="games" class="table table-striped">
-						<thead>
-							<tr>
-								<th>Game</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
+		<div class="home-content content container">
+			<ul class="nav nav-tabs" id="tab-nav">
+				<li class="all-tab">
+					<a href="#/games/all">All Games</a>
+				</li>
+				<li class="wanted-tab">
+					<a href="#/games/wanted">Wanted Games</a>
+				</li>
+				<li class="owned-tab">
+					<a href="#/games/owned">Owned Games</a>
+				</li>
+			</ul>
+			<form class="well form-inline">
+				<fieldset id="globalError" class="control-group">
+					<div class="controls">
+						<input type="text" class="span3" placeholder="Game title" id="addGame" />
+						<button type="submit" class="btn" id="submitAddGame">Submit</button>
+						<span id="errorMessage" class="help-block"></span>
+					</div>
+				</fieldset>
+			</form>
+			<table id="games" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Game</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
 
-						</tbody>
-					</table>
-				</div>
-				<div class="admin-content">
+				</tbody>
+			</table>
+		</div>
+		<div class="admin-content content container">
 
-				</div>
-			</div>
 		</div>
 		<script data-main="scripts/app" src="scripts/lib/require-jquery.js"></script>
 	</body>

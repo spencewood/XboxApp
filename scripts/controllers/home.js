@@ -1,67 +1,29 @@
 define(['jquery',
 	'app/controllers/_rulebase',
 	'app/controllers/dailies',
+	'app/controllers/games',
 	'app/models/game',
-	'app/models/adminsetting',
-	'app/lib/text!app/views/admin.tpl',
 	'app/lib/spine/spine',
 	'app/lib/spine/route',
 	'app/lib/handlebars'],
-	function($, Base, Dailies, Game, AdminSetting, adminTemplate){
-		var adminTmpl = Handlebars.compile(adminTemplate);
-
+	function($, Base, Dailies, Games, Game){
 		var Home = Base.sub({
-			el: $('body'),
+			el: '.home-content',
+
 			events: {
-				'click .confirm': 'confirmEvent',
 				'keypress #addGame': 'keypressEvent',
-				'click #clearGames': 'clearEvent',
-				'click #submitAddGame': 'addGameEvent',
-				'change #content .admin-content :checkbox': 'changeSettingEvent'
+				'click #submitAddGame': 'addGameEvent'
 			},
 
 			elements: {
 				'#addGame': 'addGameInput',
 				'#addGameSubmit': 'addGameSubmit',
 				'#errorMessage': 'errorMessage',
-				'#globalError': 'globalError',
-				'#content .admin-content': 'adminContent',
-				'#home-pill': 'homePill',
-				'#admin-pill': 'adminPill'
+				'#globalError': 'globalError'
 			},
 
 			init: function(){
-				this.routes({
-					'/': this.proxy(function(){
-						this.showPage('home');
-					}),
-					'/admin': this.proxy(function(){
-						this.showPage('admin');
-					})
-				});
-				
-				Spine.Route.setup();
-
-				AdminSetting.fetch();
-
-				this.renderAdminSection();
-			},
-
-			changeSettingEvent: function(e){
-				AdminSetting.destroyAll();
-				this.getSettings().each(function(idx, setting){
-					new AdminSetting({setting: setting}).save();
-				});
-			},
-
-			confirmEvent: function(e){
-				var target = $(e.currentTarget);
-				if(!confirm(target.data('confirm-message'))){
-					//not working
-					e.stopPropagation();
-					return false;
-				}
-				return true;
+				this.games = new Games();
 			},
 
 			keypressEvent: function(e){
@@ -76,35 +38,6 @@ define(['jquery',
 				this.addGame(this.addGameInput.val());
 			},
 
-			clearEvent: function(e){
-				e.preventDefault();
-				this.clear();
-			},
-
-			getSettings: function(){
-				return this.adminContent.find(':checkbox:checked').map(function(){
-					var setting = $(this).data('setting');
-					if(setting && setting.length){
-						return setting;
-					}
-				});
-			},
-
-			renderAdminSection: function(){
-				var settings = {},
-					local = AdminSetting.toJSON();
-				for(var i=0;i<local.length;i++){
-					settings[local[i].setting] = true;
-				}
-				this.adminContent.html(adminTmpl(settings));
-			},
-
-			showPage: function(page){
-				this.el.removeClass().addClass(page);
-				this.homePill.add(this.adminPill).removeClass();
-				this[page+'Pill'].addClass('active');
-			},
-
 			addGame: function(title, options){
 				var game = new Game({ title: title });
 				if(!this.showError(this.validate() || Dailies.validate() || game.validate())){
@@ -115,8 +48,10 @@ define(['jquery',
 				return false;
 			},
 
-			clear: function(options){
-				Game.clear(options);
+			showGames: function(type){
+				type = type || 'all';
+				this.games.fetchOrShow(type);
+				this.updateMenu(type);
 			},
 
 			showError: function(error){
@@ -130,9 +65,16 @@ define(['jquery',
 					this.globalError.removeClass('error');
 					return false;
 				}
+			},
+
+			updateMenu: function(type){
+				console.log($('#tab-nav li').filter('.' + type + '-tab'), '.' + type + '-tab');
+
+				$('#tab-nav li').removeClass('active')
+					.filter('.' + type + '-tab').addClass('active');
 			}
 		});
 
-		return new Home();
+		return Home;
 	}
 );
