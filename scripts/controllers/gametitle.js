@@ -39,7 +39,9 @@ define(['jquery',
 					return false;
 				}
 				else{
-					this.item.vote(options);
+					this.item.vote(options, this.proxy(function(){
+						this.showMessage('Vote successfully cast.', 'success');
+					}));
 					return true;
 				}
 			},

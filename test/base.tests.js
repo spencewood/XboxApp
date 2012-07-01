@@ -13,7 +13,7 @@ define(['app/controllers/_rulebase',
 				beforeEach(function(done){
 					t = new Base();
 					Daily.deleteAll();
-					AdminSetting.deleteAll();
+					AdminSetting.destroyAll();
 					done();
 				});
 

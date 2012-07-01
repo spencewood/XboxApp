@@ -14,21 +14,49 @@
     <div id="mocha"></div>
     <div id="testArea">
     	<!-- a hidden area for our integration tests to run -->
-    	<table id="games" class="table table-striped">
-            <thead>
+        <div class="home-content content container">
+            <ul class="nav nav-tabs" id="tab-nav">
+                <li class="all-tab">
+                    <a href="#/games/all">All Games</a>
+                </li>
+                <li class="wanted-tab">
+                    <a href="#/games/wanted">Wanted Games</a>
+                </li>
+                <li class="owned-tab">
+                    <a href="#/games/owned">Owned Games</a>
+                </li>
+            </ul>
+            <form class="well form-inline">
+                <fieldset id="globalError" class="control-group">
+                    <label>Add a new game</label>
+                    <div class="controls">
+                        <input type="text" class="span3" placeholder="Game title" id="addGame" />
+                        <button type="submit" class="btn" id="submitAddGame">Submit</button>
+                    </div>
+                </fieldset>
+            </form>
+            <div id="message-area">
+            </div>
+            <table id="games" class="table table-striped table-bordered">
+                <colgroup>
+                    <col width="70%"/>
+                    <col />
+                    <col width="20%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Game</th>
+                        <th>Votes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            </thead>
-            <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="admin-content content container">
 
-            </tbody>
-        </table>
-        <a href="#" id="clearGames">clear</a>
-		<form class="well form-inline">
-			<input type="text" class="span3" placeholder="Game title" id="addGame" />
-			<button type="submit" class="btn" id="submitAddGame">Submit</button>
-		</form>
-        <div id="globalError" class="control-group">
-            <span id="errorMessage" class="control-label"></span>
         </div>
     </div>
     <script data-main="runner" src="../scripts/lib/require-jquery.js"></script>

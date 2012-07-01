@@ -1,13 +1,16 @@
 define(['app/models/AdminSetting',
 	'app/helpers/date',
-	'app/lib/text!app/views/message.tpl'],
+	'app/lib/text!app/views/message.tpl',
+	'app/lib/spine/spine',
+	'app/lib/handlebars'],
 	function(AdminSetting, dateTool, message_template){
 		var messageArea = $('#message-area'),
 			tmpl = Handlebars.compile(message_template);
-
+		
+		AdminSetting.fetch();
 		var base = Spine.Controller.sub({
 			canVote: function(){
-				AdminSetting.fetch();
+				
 				var setting = AdminSetting.findByAttribute('setting','voteweekend');
 				if(setting !== null){
 					return true;
@@ -26,13 +29,13 @@ define(['app/models/AdminSetting',
 			},
 
 			validate: function(){
-				return this.canVote() ? '' : 'Adding games and voting is not allowed on weekends';
+				return this.canVote() ? '' : 'Adding games and voting is not allowed on weekends.';
 			},
 
 			showMessage: function(message, type){
 				type = type || 'alert';
 				this.clearMessage();
-				model = {
+				var model = {
 					message: message,
 					type: type.length ? ('alert-' + type) : ''
 				};
@@ -41,18 +44,8 @@ define(['app/models/AdminSetting',
 			},
 
 			showError: function(text){
-				text = text || 'Error processing request';
+				text = text || 'Error processing request.';
 				this.showMessage(text, 'error');
-				// if(text && text.length){
-				// 	block.text(text);
-				// 	container.addClass('error');
-				// 	return true;
-				// }
-				// else{
-				// 	block.empty();
-				// 	container.removeClass('error');
-				// 	return false;
-				// }
 			},
 
 			clearMessage: function(){

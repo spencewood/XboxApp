@@ -5,22 +5,23 @@ define(['app/controllers/games',
 	'app/controllers/_rulebase',
 	'app/models/game',
 	'app/models/daily',
+	'app/models/adminsetting',
 	'app/helpers/date',
 	'app/settings',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Games, GameTitle, Dailies, Home, Base, Game, Daily, datetool, settings){
+	function(Games, GameTitle, Dailies, Home, Base, Game, Daily, AdminSetting, datetool, settings){
 		describe('Games', function(){
 			//setup two games for testing most actions
 			var ownedGame = new Game({title: 'Owned', votes: 2, owned: true});
 			var unownedGame = new Game({title: 'UnOwned', votes: 2, owned: false});
 			var server = sinon.fakeServer.create();
 
-			describe('Model', function(){
-				before(function(){
-					Game.unbind('addnewgame');
-				});
+			before(function(){
+				Game.unbind('addnewgame');
+			});
 
+			describe('Model', function(){
 				beforeEach(function(){
 					Game.deleteAll();
 				});
@@ -57,14 +58,18 @@ define(['app/controllers/games',
 			});
 
 			describe('Controller', function(){
-				before(function(){
+				var controller = null;
+
+				beforeEach(function(){
+					controller = new Games();
 					Game.unbind('addnewgame');
+					Game.deleteAll();
+					Daily.deleteAll();
+					AdminSetting.deleteAll();
 				});
 
 				afterEach(function(done){
 					server.restore();
-					Game.deleteAll();
-					Daily.deleteAll();
 					done();
 				});
 
@@ -78,8 +83,7 @@ define(['app/controllers/games',
 					var stub = sinon.stub(Base.prototype, 'canVote', function(){
 						return true;
 					});
-
-					new Game({title: 's'}).save({disableAjax: true});
+					ownedGame.save({disableAjax: true});
 
 					stub.restore();
 				});
@@ -88,18 +92,18 @@ define(['app/controllers/games',
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 
-					expect(Games.getOwned().length).to.be(1);
-					expect(Games.getOwned()[0].toJSON()).to.have.key('title');
-					expect(Games.getOwned()[0].toJSON().title).to.be('Owned');
+					expect(controller.getOwned().length).to.be(1);
+					expect(controller.getOwned()[0].toJSON()).to.have.key('title');
+					expect(controller.getOwned()[0].toJSON().title).to.be('Owned');
 				});
 
 				it('returns only unowned (wanted) games when getting unowned games', function(){
 					ownedGame.save({disableAjax: true});
 					unownedGame.save({disableAjax: true});
 
-					expect(Games.getUnowned().length).to.be(1);
-					expect(Games.getUnowned()[0].toJSON()).to.have.key('title');
-					expect(Games.getUnowned()[0].toJSON().title).to.be('UnOwned');
+					expect(controller.getUnowned().length).to.be(1);
+					expect(controller.getUnowned()[0].toJSON()).to.have.key('title');
+					expect(controller.getUnowned()[0].toJSON().title).to.be('UnOwned');
 				});
 
 				it('returns wanted games in descending order by vote count', function(){
@@ -111,7 +115,7 @@ define(['app/controllers/games',
 					new Game({title: 'c', votes: 15, owned: false}).save({disableAjax: true});
 					new Game({title: 'd', votes: 7, owned: false}).save({disableAjax: true});
 					
-					var unowned = Games.getUnowned();
+					var unowned = controller.getUnowned();
 
 					expect(unowned[0].votes).to.be(50);
 					expect(unowned[unowned.length-1].votes).to.be(1);
@@ -124,10 +128,19 @@ define(['app/controllers/games',
 					new Game({title: 'a', owned: true}).save({disableAjax: true});
 					new Game({title: 'AB', owned: true}).save({disableAjax: true});
 
-					var owned = Games.getOwned();
+					var owned = controller.getOwned();
 
 					expect(owned[0].title).to.be('a');
 					expect(owned[owned.length-1].title).to.be('z');
+				});
+				
+				it('calls the addOne rendering for all viewable games', function(){
+					sinon.spy(controller, 'addOne');
+					ownedGame.save({disableAjax: true});
+					unownedGame.save({disableAjax: true});
+					expect(Game.all().length).to.be(2);
+					controller.addSelected();
+					expect(controller.addOne.called).to.be(true);
 				});
 
 				it('sets daily token when vote is made', function(done){
@@ -140,18 +153,11 @@ define(['app/controllers/games',
 						return true;
 					});
 
-					new Game().vote({disableAjax:true});
+					var game = new Game({title: 'a'});
+					game.save({disableAjax: true})
+					game.vote({disableAjax:true});
 
 					stub.restore();
-				});
-
-				it('calls the addOne rendering for all viewable games', function(){
-					sinon.spy(Games, 'addOne');
-					ownedGame.save({disableAjax: true});
-					unownedGame.save({disableAjax: true});
-					expect(Game.all().length).to.be(2);
-					Games.addSelected();
-					expect(Games.addOne.called).to.be(true);
 				});
 
 				//need to test on getting the games list again after adding one since we have no initial id

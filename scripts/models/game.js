@@ -71,20 +71,20 @@ define(['jquery',
 				if(!this.exists()){
 					//custom handling of game creation here
 					connect('addnewgame', cb, {title: this.title}, options);
+					this.constructor.__super__.create.apply(this);
 				}
 				else{
 					//need to call this to fire spine events when updating
 					this.constructor.__super__.update.apply(this);
 				}
-
 			},
 
 			validate: function(){
 				if(this.title === undefined || this.title.replace(/\s/g, '').length === 0){
-					return "Game title must have a value";
+					return "Game title must have a value.";
 				}
 				if(Game.findByAttribute('title', this.title) !== null){
-					return "Game title already exists";
+					return "Game title already exists.";
 				}
 			}
 		});
@@ -103,6 +103,7 @@ define(['jquery',
 						for(var i=0;i<records.length;i++){
 							records[i] = scrubGameData(records[i]);
 						}
+						Game.deleteAll();
 						Game.refresh(records);
 					}
 					if(cb){

@@ -1,5 +1,6 @@
 define(['app/controllers/home',
 	'app/controllers/games',
+	'app/controllers/admin',
 	'app/controllers/gametitle',
 	'app/controllers/dailies',
 	'app/models/daily',
@@ -8,21 +9,36 @@ define(['app/controllers/home',
 	'app/helpers/date',
 	'expect/expect',
 	'sinon/sinon'],
-	function(Home, Games, GameTitle, Dailies, Daily, Game, AdminSetting, dateTool){
+	function(Home, Games, Admin, GameTitle, Dailies, Daily, Game, AdminSetting, dateTool){
 		describe('Integration', function(){
 			var title = null,
-				game = new Game({title: 'test game', owned: true}).save({disableAjax: true});
+				game = new Game({title: 'test game', owned: true}).save({disableAjax: true}),
+				homeController = null,
+				gamesController = null,
+				adminController = null;
+
+			before(function(){
+				//stub a weekday to get through tests
+				sinon.stub(Home.prototype, 'getDate', function(){
+					return new Date('1-2-2012'); //Monday
+				});
+			});
 
 			beforeEach(function(){
+				homeController = new Home();
+				gamesController = new Games();
+				adminController = new Admin();
+				Game.unbind('addnewgame');
 				AdminSetting.deleteAll();
-				Home.addGame('test game', {disableAjax: true});
-				Games.addSelected();
+				homeController.addGame('test game', {disableAjax: true});
+				gamesController.show = 'all';
+				gamesController.addSelected();
 			});
 
 			afterEach(function(){
 				Game.deleteAll();
 				Daily.deleteAll();
-				$('#games tbody').empty();
+				//$('#games tbody').empty();
 			});
 
 			it('adds correct number of games to the page', function(){
@@ -30,9 +46,9 @@ define(['app/controllers/home',
 			});
 
 			it('cleans up the games list before adding new ones', function(){
-				$('#games tbody').append($('<tr>', {text: 'test'}));
-				Games.addSelected();
-				Games.addSelected();
+				$('#games tbody').append($('<tr>', {text: 'test'})).append($('<tr>', {text: 'test'}));
+				gamesController.addSelected();
+				gamesController.addSelected();
 				expect($('#games tbody tr.game').size()).to.be(1);
 			});
 
@@ -52,37 +68,17 @@ define(['app/controllers/home',
 				stub.restore();
 			});
 
-			it('will fire add game event when pressing enter in the add game input field', function(){
-				//cant actually test simulating pressing enter in an input. let's trust it.
-			});
-
 			it('submits the game when the submit button is pressed', function(){
-				var spy = sinon.spy(Home, 'addGameEvent');
+				var spy = sinon.spy(homeController, 'addGameEvent');
 				$('#addGame').val('test game');
 				$('#submitAddGame').click();
-				expect(Home.addGameEvent.called).to.be(true);
-			});
-
-			it('clears games when clicking the clear games link', function(){
-				$("#clearGames").click();
-				setTimeout(function(){
-					expect($("#games tbody tr").size()).to.be(0);
-					expect(Game.all().length).to.be(0);
-				}, 500);
-
+				expect(homeController.addGameEvent.called).to.be(true);
 			});
 
 			it('shows an error on the screen if validation fails', function(){
 				$('#submitAddGame').click();
-				expect($("#errorMessage").val().length > 0);
+				expect($("#message").text().length > 0);
 			});
-
-			// it('saves local settings when checking the checkboxes in the admin area', function(){
-			// 	var cb = $('#content .admin-content :checkbox:first');
-			// 	cb.click();
-			// 	expect(AdminSetting.all().length).to.be(1);
-			// 	expect(AdminSetting.first().setting).to.be(cb.data('setting'));
-			// });
 		});
 	}
 );

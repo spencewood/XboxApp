@@ -5,10 +5,7 @@ define(['jquery',
 	'app/models/game',
 	'app/helpers/sort',
 	'app/helpers/string',
-	'app/lib/text!app/views/all_row.tpl',
-	'app/lib/handlebars',
-	'app/lib/spine/spine',
-	'app/lib/spine/route'],
+	'app/lib/text!app/views/all_row.tpl'],
 	function($, Base, GameTitle, Dailies, Game, sort, string, all_row_template){
 		var all_row_tmpl = Handlebars.compile(all_row_template);
 

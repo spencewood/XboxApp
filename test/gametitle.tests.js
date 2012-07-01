@@ -7,6 +7,10 @@ define(['app/controllers/gametitle',
 	'sinon/sinon'],
 	function(GameTitle, Dailies, Daily, Game, dateTool){
 		describe('Game Titles', function(){
+			before(function(){
+				Game.unbind('addnewgame');
+			});
+
 			it('contains the model item for an individual game', function(){
 				var model = new Game({title: 'test game'});
 				var controller = new GameTitle({item: model});
@@ -23,15 +27,17 @@ define(['app/controllers/gametitle',
 
 			describe('Voting', function(){
 				var t = null;
-
-				before(function(){
-					Game.unbind('addnewgame');
-				});
 				
 				beforeEach(function(done){
-					t = new GameTitle({item: new Game({title: 'game', owned: false})});
+					var game = new Game({title: 'game', owned: false});
+					game.save({disableAjax: true});
+					t = new GameTitle({item: game});
 					Daily.deleteAll();
 					done();
+				});
+
+				afterEach(function(){
+					Game.deleteAll();
 				});
 
 				var monday = new Date('01-02-2012'); //a Monday

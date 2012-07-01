@@ -3,9 +3,7 @@ define(['jquery',
 	'app/controllers/dailies',
 	'app/controllers/games',
 	'app/models/game',
-	'app/lib/spine/spine',
-	'app/lib/spine/route',
-	'app/lib/handlebars'],
+	'app/lib/spine/route'],
 	function($, Base, Dailies, Games, Game){
 		var Home = Base.sub({
 			el: '.home-content',
@@ -40,16 +38,15 @@ define(['jquery',
 
 			addGame: function(title, options){
 				var game = new Game({ title: title }),
-					error = (this.validate() || Dailies.validate() || game.validate()),
-					self = this;
+					error = (this.validate() || Dailies.validate() || game.validate());
 				if(error && error.length){
 					this.showError(error);
 					return false;
 				}
 				else{
-					game.save(options, function(){
-						self.showMessage('Game added!', 'success');
-					});
+					game.save(options, this.proxy(function(){
+						this.showMessage('Game added!', 'success');
+					}));
 					this.addGameInput.val('');
 					
 					return true;

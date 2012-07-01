@@ -29,21 +29,28 @@ require(['controllers/home',
 						this.home.showGames();
 						this.home.active();
 						this.updateMenu('home');
+						this.clearMessage();
 					},
 					'/games/:type': function(params){
 						this.home.showGames(params.type);
 						this.home.active();
 						this.updateMenu('home');
+						this.clearMessage();
 					},
 					'/admin': function(){
 						this.admin.active();
 						this.updateMenu('admin');
+						this.clearMessage();
 					}
 				},
 
 				updateMenu: function(type){
 					$('#home-pill, #admin-pill').removeClass('active');
 					$('#' + type + '-pill').addClass('active');
+				},
+
+				clearMessage: function(){
+					$("#message-area").empty();
 				}
 			});
 			
