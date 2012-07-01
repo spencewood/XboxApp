@@ -6,10 +6,15 @@ define(['jquery',
 		//instance
 		var GameTitle = Base.sub({
 			tag: 'tr',
-			className: 'game',
+			className: 'game control-group',
+
 			events: {
 				'click .vote-action': 'voteEvent',
 				'click .owned-action': 'setOwnedEvent'
+			},
+
+			elements: {
+				'.error': 'error'
 			},
 
 			init: function(){
@@ -28,13 +33,15 @@ define(['jquery',
 			},
 
 			vote: function(options){
-				if(this.canVote() && Dailies.isOpen()){
-					this.item.vote(options);
-				}
-				else{
+				var error = (this.validate() || Dailies.validate());
+				if(error && error.length){
+					this.showError(error);
 					return false;
 				}
-				return true;
+				else{
+					this.item.vote(options);
+					return true;
+				}
 			},
 
 			setOwnedEvent: function(e){

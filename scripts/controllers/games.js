@@ -31,6 +31,8 @@ define(['jquery',
 				Game.bind('update', this.proxy(this.addSelected));
 				//we need to get the latest list when something new since the api only returns true on addnewgame
 				Game.bind('addnewgame', this.proxy(this.fetch));
+				//handle errors
+				Game.bind('error', this.proxy(this.showError));
 			},
 
 			fetch: function(){
@@ -45,12 +47,6 @@ define(['jquery',
 				else{
 					this.addSelected();
 				}
-			},
-
-			updateMenu: function(){
-				/*this.tabs
-					.find('li').removeClass('active').end()
-					.find('#'+this.show.toLowerCase()+'-tab').addClass('active');*/
 			},
 
 			addSelected: function(){

@@ -39,6 +39,7 @@ define(['jquery',
 				success: handleCallBack,
 				error: function(e){
 					console.log(e);
+					Game.trigger('error');
 				}
 			});
 		};

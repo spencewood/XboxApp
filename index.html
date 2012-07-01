@@ -35,18 +35,26 @@
 			</ul>
 			<form class="well form-inline">
 				<fieldset id="globalError" class="control-group">
+					<label>Add a new game</label>
 					<div class="controls">
 						<input type="text" class="span3" placeholder="Game title" id="addGame" />
 						<button type="submit" class="btn" id="submitAddGame">Submit</button>
-						<span id="errorMessage" class="help-block"></span>
 					</div>
 				</fieldset>
 			</form>
-			<table id="games" class="table table-striped">
+			<div id="message-area">
+			</div>
+			<table id="games" class="table table-striped table-bordered">
+				<colgroup>
+					<col width="70%"/>
+					<col />
+					<col width="20%"/>
+				</colgroup>
 				<thead>
 					<tr>
 						<th>Game</th>
-						<th></th>
+						<th>Votes</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>

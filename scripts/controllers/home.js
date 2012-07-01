@@ -39,13 +39,21 @@ define(['jquery',
 			},
 
 			addGame: function(title, options){
-				var game = new Game({ title: title });
-				if(!this.showError(this.validate() || Dailies.validate() || game.validate())){
-					game.save(options);
+				var game = new Game({ title: title }),
+					error = (this.validate() || Dailies.validate() || game.validate()),
+					self = this;
+				if(error && error.length){
+					this.showError(error);
+					return false;
+				}
+				else{
+					game.save(options, function(){
+						self.showMessage('Game added!', 'success');
+					});
 					this.addGameInput.val('');
+					
 					return true;
 				}
-				return false;
 			},
 
 			showGames: function(type){
@@ -54,22 +62,7 @@ define(['jquery',
 				this.updateMenu(type);
 			},
 
-			showError: function(error){
-				if(error && error.length){
-					this.errorMessage.text(error);
-					this.globalError.addClass('error');
-					return true;
-				}
-				else{
-					this.errorMessage.empty();
-					this.globalError.removeClass('error');
-					return false;
-				}
-			},
-
 			updateMenu: function(type){
-				console.log($('#tab-nav li').filter('.' + type + '-tab'), '.' + type + '-tab');
-
 				$('#tab-nav li').removeClass('active')
 					.filter('.' + type + '-tab').addClass('active');
 			}

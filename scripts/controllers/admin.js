@@ -14,7 +14,6 @@ define(['jquery',
 			el: '.admin-content',
 
 			events: {
-				'click .confirm': 'confirmEvent',
 				'click #clearGames': 'clearEvent',
 				'change :checkbox': 'changeSettingEvent'
 			},
@@ -35,19 +34,12 @@ define(['jquery',
 				});
 			},
 
-			confirmEvent: function(e){
-				var target = $(e.currentTarget);
-				if(!confirm(target.data('confirm-message'))){
-					//not working
-					e.stopPropagation();
-					return false;
-				}
-				return true;
-			},
-
 			clearEvent: function(e){
 				e.preventDefault();
-				this.clear();
+				var target = $(e.currentTarget);
+				if(confirm(target.data('confirm-message'))){
+					this.clear();
+				}
 			},
 
 			clear: function(options){
