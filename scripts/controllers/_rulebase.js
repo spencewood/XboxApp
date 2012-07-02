@@ -4,13 +4,11 @@ define(['app/models/AdminSetting',
 	'app/lib/spine/spine',
 	'app/lib/handlebars'],
 	function(AdminSetting, dateTool, message_template){
-		var messageArea = $('#message-area'),
-			tmpl = Handlebars.compile(message_template);
+		var tmpl = Handlebars.compile(message_template);
 		
 		AdminSetting.fetch();
 		var base = Spine.Controller.sub({
 			canVote: function(){
-				
 				var setting = AdminSetting.findByAttribute('setting','voteweekend');
 				if(setting !== null){
 					return true;
@@ -40,7 +38,11 @@ define(['app/models/AdminSetting',
 					type: type.length ? ('alert-' + type) : ''
 				};
 
-				messageArea.html(tmpl(model));
+				$('.message-area:visible').html(tmpl(model));
+			},
+
+			showSimpleMessage: function(message){
+				$('.message-area:visible').text(message);
 			},
 
 			showError: function(text){
@@ -49,7 +51,7 @@ define(['app/models/AdminSetting',
 			},
 
 			clearMessage: function(){
-				messageArea.empty();
+				$('.message-area').empty();
 			}
 		});
 

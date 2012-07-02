@@ -1,19 +1,52 @@
 header{
-	background-color: #2E9FFF;
-	padding: 50px 0 25px;
+	background-color: #F2F2F2;
+	padding: 30px 0;
+}
+
+header .container{
+	position: relative;
+}
+
+h1, h2{
+	color: #555;
+}
+
+header h1{
+	font-family: Helvetica, Arial, sans-serif;
+	position: absolute;
+	left: 120px;
+	top: 20px;
 }
 
 nav{
 	float: right;
 	color: #fff;
+	margin-top: 10px;
 }
 
 nav a{
+	color: #000;
+}
+
+nav .nav-pills li.active a{
+	background-color: #24591C;
 	color: #fff;
+}
+
+nav .nav-pills li.active a:hover{
+	background-color: #7DA641;
+}
+
+#logo{
+	height: 100px;
 }
 
 .container{
 	max-width: 960px;
+}
+
+.container h2{
+	margin-bottom: 10px;
 }
 
 .content.container{
@@ -25,14 +58,10 @@ nav a{
 	display: block;
 }
 
-/*body.home #content .home-content,
-body.admin #content .admin-content{
-	display: block;
+#games{
+	display: none;
 }
 
-body #content .home-content,
-body #content .admin-content,
-body.home #content .admin-content,
-body.admin #content .home-content{
-	display: none;
-}*/
+.admin-content form .button-box{
+	padding: 10px;
+}

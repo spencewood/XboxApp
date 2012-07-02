@@ -26,21 +26,22 @@ require(['controllers/home',
 				//routing setup to handle location hashes and activate the controllers
 				routes: {
 					'/': function(){
+						this.clearMessage();
 						this.home.showGames();
 						this.home.active();
 						this.updateMenu('home');
-						this.clearMessage();
+						
 					},
 					'/games/:type': function(params){
+						this.clearMessage();
 						this.home.showGames(params.type);
 						this.home.active();
 						this.updateMenu('home');
-						this.clearMessage();
 					},
 					'/admin': function(){
+						this.clearMessage();
 						this.admin.active();
 						this.updateMenu('admin');
-						this.clearMessage();
 					}
 				},
 

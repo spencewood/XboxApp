@@ -9,7 +9,7 @@ define(['jquery',
 	function($, Base, GameTitle, Dailies, Game, sort, string, all_row_template){
 		var all_row_tmpl = Handlebars.compile(all_row_template);
 
-		var Games = Spine.Controller.sub({
+		var Games = Base.sub({
 			el: $('#games tbody'),
 			show: 'All',
 
@@ -57,9 +57,18 @@ define(['jquery',
 
 			addAll: function(items){
 				this.el.empty();
-				for(var i=0;i<items.length;i++){
-					this.proxy(this.addOne(items[i]));
+				
+				if(items && items.length){
+					for(var i=0;i<items.length;i++){
+						this.proxy(this.addOne(items[i]));
+					}
+					this.el.parent().show();
 				}
+				else{
+					this.el.parent().hide();
+					this.showSimpleMessage('No games found.');
+				}
+				
 			},
 
 			getAll: function(){

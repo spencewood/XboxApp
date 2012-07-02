@@ -15,8 +15,8 @@ define(['mocha/mocha', 'app/lib/spine/spine', 'app/lib/spine/ajax'], function(){
 		'gametitle.tests',
 		'daily.tests',
 		'integration.tests',
-		'helper.tests'
-		//'service.tests'
+		'helper.tests',
+		'service.tests'
 		], function(){
 		mocha.run();
 	});

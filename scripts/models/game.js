@@ -68,7 +68,7 @@ define(['jquery',
 
 			//override spine's save method because we aren't using REST
 			save: function(options, cb){
-				if(!this.exists()){
+				if(!this.exists() && this.isValid()){
 					//custom handling of game creation here
 					connect('addnewgame', cb, {title: this.title}, options);
 					this.constructor.__super__.create.apply(this);
@@ -103,6 +103,7 @@ define(['jquery',
 						for(var i=0;i<records.length;i++){
 							records[i] = scrubGameData(records[i]);
 						}
+						//spine creates a temporary record, we need to overwrite everything in memory
 						Game.deleteAll();
 						Game.refresh(records);
 					}

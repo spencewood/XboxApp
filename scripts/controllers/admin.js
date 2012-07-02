@@ -14,7 +14,8 @@ define(['jquery',
 			el: '.admin-content',
 
 			events: {
-				'click #clearGames': 'clearEvent',
+				'click #clearGames': 'clearGamesEvent',
+				'click #clearDaily': 'clearDailyEvent',
 				'change :checkbox': 'changeSettingEvent'
 			},
 
@@ -34,16 +35,34 @@ define(['jquery',
 				});
 			},
 
-			clearEvent: function(e){
+			_confirm: function(e, func){
 				e.preventDefault();
 				var target = $(e.currentTarget);
 				if(confirm(target.data('confirm-message'))){
-					this.clear();
+					func();
 				}
 			},
 
-			clear: function(options){
+			clearGamesEvent: function(e){
+				this._confirm(e, this.proxy(function(){
+					this.clearGames();
+					this.showMessage('All games cleared.', 'block');
+				}));
+			},
+
+			clearDailyEvent: function(e){
+				this._confirm(e, this.proxy(function(){
+					this.clearDaily();
+					this.showMessage('Daily token cleared', 'block');
+				}));
+			},
+
+			clearGames: function(options){
 				Game.clear(options);
+			},
+
+			clearDaily: function(){
+				Dailies.clear();
 			},
 
 			getSettings: function(){
