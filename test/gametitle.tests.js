@@ -1,10 +1,10 @@
-define(['app/controllers/gametitle',
-	'app/controllers/dailies',
-	'app/models/daily',
-	'app/models/game',
-	'app/helpers/date',
-	'expect/expect',
-	'sinon/sinon'],
+define(['controllers/gametitle',
+	'controllers/dailies',
+	'models/daily',
+	'models/game',
+	'helpers/date',
+	'expect',
+	'sinon'],
 	function(GameTitle, Dailies, Daily, Game, dateTool){
 		describe('Game Titles', function(){
 			before(function(){

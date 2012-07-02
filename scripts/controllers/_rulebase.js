@@ -1,8 +1,8 @@
-define(['app/models/AdminSetting',
-	'app/helpers/date',
-	'app/lib/text!app/views/message.tpl',
-	'app/lib/spine/spine',
-	'app/lib/handlebars'],
+define(['models/AdminSetting',
+	'helpers/date',
+	'lib/text!views/message.tpl',
+	'lib/spine/spine',
+	'lib/handlebars'],
 	function(AdminSetting, dateTool, message_template){
 		var tmpl = Handlebars.compile(message_template);
 		

@@ -1,6 +1,6 @@
-define(['app/lib/spine/spine',
-	'app/lib/spine/ajax',
-	'app/lib/spine/local'],
+define(['lib/spine/spine',
+	'lib/spine/ajax',
+	'lib/spine/local'],
 	function(){
 		if(window.AdminSetting){
 			return window.AdminSetting;

@@ -1,7 +1,7 @@
-define(['app/helpers/date',
-	'app/helpers/sort',
-	'expect/expect',
-	'sinon/sinon'],
+define(['helpers/date',
+	'helpers/sort',
+	'expect',
+	'sinon'],
 	function(dateTool){
 		describe('Utilies', function(){
 			describe('Date', function(){

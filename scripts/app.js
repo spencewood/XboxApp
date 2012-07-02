@@ -1,7 +1,5 @@
 requirejs.config({
-	paths: {
-		app: '.'
-	}
+	baseUrl: 'scripts'
 });
 
 require(['controllers/home',

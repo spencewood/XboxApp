@@ -1,10 +1,10 @@
-define(['app/controllers/_rulebase',
-	'app/controllers/dailies',
-	'app/models/daily',
-	'app/models/adminsetting',
-	'app/helpers/date',
-	'expect/expect',
-	'sinon/sinon'],
+define(['controllers/_rulebase',
+	'controllers/dailies',
+	'models/daily',
+	'models/adminsetting',
+	'helpers/date',
+	'expect',
+	'sinon'],
 	function(Base, Dailies, Daily, AdminSetting, dateTool){
 		describe('Application', function(){
 			

@@ -1,22 +1,26 @@
 requirejs.config({
-	paths: {
-		app: '../scripts'
+	baseUrl: '../scripts',
+	paths:{
+		test: '../test',
+		mocha: '../test/mocha/mocha',
+		expect: '../test/expect/expect',
+		sinon: '../test/sinon/sinon'
 	}
 });
 
-define(['mocha/mocha', 'app/lib/spine/spine', 'app/lib/spine/ajax'], function(){
+require(['mocha', 'lib/spine/spine', 'lib/spine/ajax'], function(){
 	mocha.setup('bdd');
 
 	require([
-		'home.tests',
-		'admin.tests',
-		'base.tests',
-		'games.tests',
-		'gametitle.tests',
-		'daily.tests',
-		'integration.tests',
-		'helper.tests',
-		'service.tests'
+		'test/home.tests',
+		'test/admin.tests',
+		'test/base.tests',
+		'test/games.tests',
+		'test/gametitle.tests',
+		'test/daily.tests',
+		'test/integration.tests',
+		'test/helper.tests',
+		'test/service.tests'
 		], function(){
 		mocha.run();
 	});

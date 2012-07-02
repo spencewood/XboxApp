@@ -1,10 +1,9 @@
-define(['jquery',
-	'app/controllers/_rulebase',
-	'app/controllers/dailies',
-	'app/controllers/games',
-	'app/models/game',
-	'app/lib/spine/route'],
-	function($, Base, Dailies, Games, Game){
+define(['controllers/_rulebase',
+	'controllers/dailies',
+	'controllers/games',
+	'models/game',
+	'lib/spine/route'],
+	function(Base, Dailies, Games, Game){
 		var Home = Base.sub({
 			el: '.home-content',
 

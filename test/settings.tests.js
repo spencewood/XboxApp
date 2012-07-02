@@ -1,8 +1,8 @@
-define(['app/controllers/dailies',
-	'app/models/daily',
-	'app/helpers/date',
-	'expect/expect',
-	'sinon/sinon'],
+define(['controllers/dailies',
+	'models/daily',
+	'helpers/date',
+	'expect',
+	'sinon'],
 	function(Dailies, Daily, dateTool){
 		describe('Dailies', function(){
 			describe('Rules', function(){

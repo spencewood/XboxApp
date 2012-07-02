@@ -1,7 +1,6 @@
-define(['jquery',
-	'app/settings',
-	'app/lib/spine/spine'],
-	function($, settings){
+define(['settings',
+	'lib/spine/spine'],
+	function(settings){
 		if(window.Game){
 			return window.Game;
 		}

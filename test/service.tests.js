@@ -1,5 +1,6 @@
-define(['jquery', 'app/settings', 'expect/expect'],
-	function($, settings){
+define(['settings',
+	'expect'],
+	function(settings){
 		describe('Service', function(){
 			var games = [], //used to get the results back for some tests
 				getGameId = function(){

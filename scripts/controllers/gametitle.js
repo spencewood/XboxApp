@@ -1,8 +1,7 @@
-define(['jquery',
-	'app/controllers/_rulebase',
-	'app/controllers/dailies',
-	'app/settings'],
-	function($, Base, Dailies, settings){
+define(['controllers/_rulebase',
+	'controllers/dailies',
+	'settings'],
+	function(Base, Dailies, settings){
 		//instance
 		var GameTitle = Base.sub({
 			tag: 'tr',

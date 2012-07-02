@@ -1,13 +1,12 @@
-define(['jquery',
-	'app/controllers/_rulebase',
-	'app/controllers/dailies',
-	'app/models/game',
-	'app/models/adminsetting',
-	'app/lib/text!app/views/admin.tpl',
-	'app/lib/spine/spine',
-	'app/lib/spine/route',
-	'app/lib/handlebars'],
-	function($, Base, Dailies, Game, AdminSetting, adminTemplate){
+define(['controllers/_rulebase',
+	'controllers/dailies',
+	'models/game',
+	'models/adminsetting',
+	'lib/text!views/admin.tpl',
+	'lib/spine/spine',
+	'lib/spine/route',
+	'lib/handlebars'],
+	function(Base, Dailies, Game, AdminSetting, adminTemplate){
 		var adminTmpl = Handlebars.compile(adminTemplate);
 
 		var Admin = Base.sub({

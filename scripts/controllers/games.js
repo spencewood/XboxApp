@@ -1,12 +1,11 @@
-define(['jquery',
-	'app/controllers/_rulebase',
-	'app/controllers/gametitle',
-	'app/controllers/dailies',
-	'app/models/game',
-	'app/helpers/sort',
-	'app/helpers/string',
-	'app/lib/text!app/views/all_row.tpl'],
-	function($, Base, GameTitle, Dailies, Game, sort, string, all_row_template){
+define(['controllers/_rulebase',
+	'controllers/gametitle',
+	'controllers/dailies',
+	'models/game',
+	'helpers/sort',
+	'helpers/string',
+	'lib/text!views/all_row.tpl'],
+	function(Base, GameTitle, Dailies, Game, sort, string, all_row_template){
 		var all_row_tmpl = Handlebars.compile(all_row_template);
 
 		var Games = Base.sub({

@@ -1,8 +1,8 @@
-define(['app/models/daily',
- 'app/models/game',
- 'app/models/adminsetting',
- 'app/helpers/date',
- 'app/lib/spine/spine'],
+define(['models/daily',
+ 'models/game',
+ 'models/adminsetting',
+ 'helpers/date',
+ 'lib/spine/spine'],
 	function(Daily, Game, AdminSetting, dateTool){
 		var Dailies = Spine.Controller.sub();
 		Daily.fetch();
