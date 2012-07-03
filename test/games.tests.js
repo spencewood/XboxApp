@@ -1,5 +1,5 @@
 define(['controllers/games',
-	'controllers/GameTitle',
+	'controllers/gametitle',
 	'controllers/dailies',
 	'controllers/home',
 	'controllers/_rulebase',
