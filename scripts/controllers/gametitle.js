@@ -1,6 +1,7 @@
 define(['controllers/_rulebase',
 	'controllers/dailies',
-	'settings'],
+	'settings',
+	'lib/spine/spine'],
 	function(Base, Dailies, settings){
 		//instance
 		var GameTitle = Base.sub({

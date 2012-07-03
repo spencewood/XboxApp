@@ -4,7 +4,8 @@ define(['controllers/_rulebase',
 	'models/game',
 	'helpers/sort',
 	'helpers/string',
-	'lib/text!views/all_row.tpl'],
+	'lib/text!views/all_row.tpl',
+	'lib/spine/spine'],
 	function(Base, GameTitle, Dailies, Game, sort, string, all_row_template){
 		var all_row_tmpl = Handlebars.compile(all_row_template);
 

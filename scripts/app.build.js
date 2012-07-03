@@ -4,5 +4,6 @@
 	out: 'app.built.js',
 	paths:{
 		'jquery': 'lib/require-jquery'
-	}
+	},
+	findNestedDependencies: true
 })

@@ -2,8 +2,7 @@ define(['controllers/_rulebase',
 	'controllers/dailies',
 	'controllers/games',
 	'models/game',
-	'lib/spine/spine',
-	'lib/spine/route'],
+	'lib/spine/spine'],
 	function(Base, Dailies, Games, Game){
 		var Home = Base.sub({
 			el: '.home-content',
