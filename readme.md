@@ -12,6 +12,9 @@ Tests: http://xbox.notqualified.org/test
  * Stores "session" data in the browser's Local Storage (for keeping track of daily votes)
  * Routing with deep-links. All "pages" are refreshable.
 
+##Code
+All code under /scripts is mine except for anything under /scripts/lib. All testing scripts are under /test.
+
 ##Notes
 All unit tests pass except some raw web service calls to the API. The tests were written against the spec and should pass, so the calls are not doing what is documented!
 

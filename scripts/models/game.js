@@ -1,3 +1,9 @@
+/*
+ * Game Model:
+ * The meat of the app. This handles all requests to the api and handles data transforms.
+ * It also provides some convienence functions for games.
+ */
+
 define(['settings',
 	'lib/spine/spine'],
 	function(settings){
@@ -19,6 +25,7 @@ define(['settings',
 
 		//private methods
 		var connect = function(method, cb, data, options){
+			//callback handling and triggering of custom events
 			var handleCallBack = function(records){
 				if(cb){
 					cb(records);
@@ -27,9 +34,14 @@ define(['settings',
 				return records;
 			};
 
+			//purely for testing purposes
 			if(options && options.disableAjax){
 				return handleCallBack();
 			}
+
+			//the gateway to all api calls is here.
+			//it uses the jsonp wrapper for jquery.
+			//the callback is transparently handled and will be returned to success
 			data = $.extend(data || {}, {apiKey: settings.apiKey});
 			$.ajax({
 				url: [settings.votingServiceUrl, method].join('/'),
@@ -46,10 +58,10 @@ define(['settings',
 		var scrubGameData = function(game){
 			//return game data with correct data types
 			return {
-				id: parseInt(game.id, 10),
-				owned: game.owned === "1",
+				id: parseInt(game.id, 10), //int
+				owned: game.owned === "1", //bool
 				title: game.title,
-				votes: parseInt(game.votes, 10)
+				votes: parseInt(game.votes, 10) //int
 			};
 		};
 
@@ -65,7 +77,7 @@ define(['settings',
 				this.updateAttribute('owned', true);
 			},
 
-			//override spine's save method because we aren't using REST
+			//override spine's save method because we aren't using REST (default spine behavior)
 			save: function(options, cb){
 				if(!this.exists() && this.isValid()){
 					//custom handling of game creation here
@@ -113,7 +125,7 @@ define(['settings',
 			}
 		});
 
-		//attaching to window because controllers need an identical reference
+		//attaching to window because controllers need an identical reference for event binding
 		window.Game = Game;
 
 		return Game;

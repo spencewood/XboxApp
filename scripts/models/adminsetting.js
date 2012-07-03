@@ -1,3 +1,9 @@
+/*
+ * AdminSettings Model:
+ * This stores user preferences in Local Storage.
+ * There are only two right now: vote on weekends and vote multiple times a day
+ */
+
 define(['lib/spine/spine',
 	'lib/spine/ajax',
 	'lib/spine/local'],

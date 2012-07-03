@@ -1,3 +1,8 @@
+/*
+ * Games Controller:
+ * This handles the lists of games and binding events to the Game model. It is in charge of the games table.
+ */
+
 define(['controllers/_rulebase',
 	'controllers/gametitle',
 	'controllers/dailies',
@@ -36,6 +41,7 @@ define(['controllers/_rulebase',
 				Game.fetch();
 			},
 
+			//fetch the records from ajax, or if we have some just show what we have
 			fetchOrShow: function(type){
 				this.show = type;
 				if(Game.all().length === 0){
@@ -50,11 +56,13 @@ define(['controllers/_rulebase',
 				this.proxy(this.addAll(this['get'+string.ucFirst(this.show)]()));
 			},
 
+			//create a new gametitle controller for each item, so it can render itself
 			addOne: function(item){
 				var title = new GameTitle({item: item});
 				this.append(title.render(all_row_tmpl));
 			},
 
+			//add all of the games that we know about
 			addAll: function(items){
 				this.el.empty();
 				

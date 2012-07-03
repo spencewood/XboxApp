@@ -1,3 +1,8 @@
+/*
+ * Dailies Controller:
+ * The Dailies controller handles checking, validating and adding Daily tokens with the Daily model
+ */
+
 define(['models/daily',
  'models/game',
  'models/adminsetting',
@@ -8,7 +13,9 @@ define(['models/daily',
 		Daily.fetch();
 		//static
 		Dailies.extend({
+			//if we haven't voted today, it would be open
 			isOpen: function(){
+				//unless our setting is to allow unlimited votes
 				if(AdminSetting.findByAttribute('setting','votedaily')){
 					return true;
 				}

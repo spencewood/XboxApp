@@ -1,3 +1,7 @@
+/*
+ * The main application start. This loads all of the initial libraries and sets up routing.
+ */
+
 requirejs.config({
 	baseUrl: 'scripts'
 });

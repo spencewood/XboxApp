@@ -1,3 +1,9 @@
+/*
+ * Home Controller:
+ * This controller handles anything under the home tab that is not part of the games table.
+ * It is a messenger to the Games controller and is in charge of adding new games.
+ */
+
 define(['controllers/_rulebase',
 	'controllers/dailies',
 	'controllers/games',

@@ -1,3 +1,7 @@
+/*
+ * String functions
+ */
+
 define(function(){
 	return {
 		ucFirst: function(str){

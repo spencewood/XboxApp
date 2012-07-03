@@ -1,3 +1,8 @@
+/*
+ * GameTitle Controller:
+ * One GameTitle controller is made for every game listed. This handles per-game rendering (rows) and events.
+ */
+
 define(['controllers/_rulebase',
 	'controllers/dailies',
 	'settings',
@@ -8,11 +13,13 @@ define(['controllers/_rulebase',
 			tag: 'tr',
 			className: 'game control-group',
 
+			//these are events to be bound with jquery by spine
 			events: {
 				'click .vote-action': 'voteEvent',
 				'click .owned-action': 'setOwnedEvent'
 			},
 
+			//elements bound to the controller by spine
 			elements: {
 				'.error': 'error'
 			},

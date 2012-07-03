@@ -1,3 +1,8 @@
+/*
+ * Admin controller:
+ * This handles the admin page exclusively.
+ */
+
 define(['controllers/_rulebase',
 	'controllers/dailies',
 	'models/game',

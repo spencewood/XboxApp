@@ -1,3 +1,7 @@
+/*
+ * String and integer sorting for use in ordering of games
+ */
+
 define(function(){
 	var toLowerIfString = function(str){
 		if(typeof str === 'string'){
@@ -20,7 +24,7 @@ define(function(){
 					return 1;
 				}
 				return 0;
-			}
+			};
 		}
 	};
 });

@@ -1,3 +1,9 @@
+/*
+ * Base Controller:
+ * This is inherited by several other controllers to gain additional "rule" functionality
+ * It also shows messages
+ */
+
 define(['models/adminsetting',
 	'helpers/date',
 	'lib/text!views/message.tpl',
@@ -10,6 +16,7 @@ define(['models/adminsetting',
 		var base = Spine.Controller.sub({
 			canVote: function(){
 				var setting = AdminSetting.findByAttribute('setting','voteweekend');
+				//if the setting is set for weekend votes
 				if(setting !== null){
 					return true;
 				}
