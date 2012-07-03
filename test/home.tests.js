@@ -11,11 +11,12 @@ define(['controllers/home',
 	'sinon'],
 	function(Home, Games, GameTitle, Dailies, Game, Daily, AdminSetting, datetool, settings){
 		describe('Home', function(){
-			var homeController = null;
+			var homeController = null,
+				dateStub = null;
 			before(function(){
 				homeController = new Home();
 				//stub a weekday to get through tests
-				sinon.stub(Home.prototype, 'getDate', function(){
+				dateStub = sinon.stub(Home.prototype, 'getDate', function(){
 					return new Date('1-2-2012'); //Monday
 				});
 				Game.unbind('addnewgame');
@@ -26,6 +27,10 @@ define(['controllers/home',
 				Daily.deleteAll();
 				Game.deleteAll();
 			});
+
+			after(function(){
+				dateStub.restore();
+			})
 
 			it('does not allow duplicate titles', function(){
 				var addAGame = function(){

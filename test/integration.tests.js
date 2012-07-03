@@ -16,17 +16,21 @@ define(['controllers/home',
 				game = new Game({title: 'test game', owned: true}).save({disableAjax: true}),
 				homeController = null,
 				gamesController = null,
-				adminController = null;
+				adminController = null,
+				dateStub = null;
+
+			before(function(){
+				//stub a weekday to get through tests
+				dateStub = sinon.stub(Home.prototype, 'getDate', function(){
+					return new Date('1-2-2012'); //Monday
+				});
+			})
 
 			beforeEach(function(){
 				homeController = new Home();
 				gamesController = new Games();
 				adminController = new Admin();
 
-				//stub a weekday to get through tests
-				sinon.stub(homeController, 'getDate', function(){
-					return new Date('1-2-2012'); //Monday
-				});
 				Game.unbind('addnewgame');
 				AdminSetting.deleteAll();
 				homeController.addGame('test game', {disableAjax: true});
@@ -39,6 +43,10 @@ define(['controllers/home',
 				Daily.deleteAll();
 				//$('#games tbody').empty();
 			});
+
+			after(function(){
+				dateStub.restore();
+			})
 
 			it('cleans up the games list before adding new ones', function(){
 				$('#games tbody').append($('<tr>', {text: 'test'})).append($('<tr>', {text: 'test'}));
