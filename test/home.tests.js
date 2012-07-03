@@ -1,4 +1,4 @@
-define(['controllers/Home',
+define(['mocha','controllers/Home',
 	'controllers/Games',
 	'controllers/GameTitle',
 	'controllers/dailies',
@@ -9,7 +9,7 @@ define(['controllers/Home',
 	'settings',
 	'expect',
 	'sinon'],
-	function(Home, Games, GameTitle, Dailies, Game, Daily, AdminSetting, datetool, settings){
+	function(mocha, Home, Games, GameTitle, Dailies, Game, Daily, AdminSetting, datetool, settings){
 		describe('Home', function(){
 			var homeController = null;
 			before(function(){

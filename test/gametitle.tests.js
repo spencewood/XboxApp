@@ -4,7 +4,8 @@ define(['controllers/gametitle',
 	'models/game',
 	'helpers/date',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(GameTitle, Dailies, Daily, Game, dateTool){
 		describe('Game Titles', function(){
 			before(function(){

@@ -9,7 +9,8 @@ define(['controllers/games',
 	'helpers/date',
 	'settings',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(Games, GameTitle, Dailies, Home, Base, Game, Daily, AdminSetting, datetool, settings){
 		describe('Games', function(){
 			//setup two games for testing most actions

@@ -2,7 +2,8 @@ define(['controllers/dailies',
 	'models/daily',
 	'helpers/date',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(Dailies, Daily, dateTool){
 		describe('Dailies', function(){
 			describe('Rules', function(){
