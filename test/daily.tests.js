@@ -3,7 +3,8 @@ define(['controllers/dailies',
 	'models/adminsetting',
 	'helpers/date',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(Dailies, Daily, AdminSetting, dateTool){
 		describe('Dailies', function(){
 			describe('Rules', function(){

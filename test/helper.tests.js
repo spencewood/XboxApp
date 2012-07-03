@@ -1,7 +1,8 @@
 define(['helpers/date',
 	'helpers/sort',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(dateTool){
 		describe('Utilies', function(){
 			describe('Date', function(){

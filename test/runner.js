@@ -8,7 +8,12 @@ requirejs.config({
 	}
 });
 
-require(['mocha', 'lib/spine/spine', 'lib/spine/ajax'], function(){
+require(['mocha',
+	'expect',
+	'sinon',
+	'lib/spine/spine',
+	'lib/spine/ajax'
+	], function(){
 	mocha.setup('bdd');
 
 	require([

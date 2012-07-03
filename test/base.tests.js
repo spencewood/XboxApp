@@ -4,7 +4,8 @@ define(['controllers/_rulebase',
 	'models/adminsetting',
 	'helpers/date',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(Base, Dailies, Daily, AdminSetting, dateTool){
 		describe('Application', function(){
 			

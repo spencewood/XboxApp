@@ -1,5 +1,6 @@
 define(['settings',
-	'expect'],
+	'expect',
+	'mocha'],
 	function(settings){
 		describe('Service', function(){
 			var games = [], //used to get the results back for some tests

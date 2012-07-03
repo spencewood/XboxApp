@@ -8,7 +8,8 @@ define(['controllers/admin',
 	'helpers/date',
 	'settings',
 	'expect',
-	'sinon'],
+	'sinon',
+	'mocha'],
 	function(Admin, Games, GameTitle, Dailies, Game, Daily, AdminSetting, datetool, settings){
 		describe('Admin', function(){
 			var adminController = null,

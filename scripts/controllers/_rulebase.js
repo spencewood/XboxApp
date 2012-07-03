@@ -1,4 +1,4 @@
-define(['models/AdminSetting',
+define(['models/adminsetting',
 	'helpers/date',
 	'lib/text!views/message.tpl',
 	'lib/spine/spine',
