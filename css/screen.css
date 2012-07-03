@@ -1,3 +1,6 @@
+@import url('bootstrap.css');
+@import url('bootstrap-responsive.css');
+
 header{
 	background-color: #F2F2F2;
 	padding: 30px 0;
