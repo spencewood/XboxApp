@@ -11,6 +11,7 @@ requirejs.config({
 require(['mocha',
 	'expect',
 	'sinon',
+	'lib/json2',
 	'lib/spine/spine',
 	'lib/spine/ajax'
 	], function(){

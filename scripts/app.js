@@ -9,6 +9,8 @@ requirejs.config({
 require(['jquery',
 	'controllers/home',
 	'controllers/admin',
+	'lib/json2',
+	'lib/jquery-hashchange',
 	'lib/bootstrap',
 	'lib/spine/spine',
 	'lib/handlebars'],

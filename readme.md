@@ -23,3 +23,6 @@ Caching initial game data I think is a bad idea. However, keeping it cached over
 I didn't go anywhere with web workers because I thought that it would just add unnecessary complexity.
 
 With the speed of this app, there is little need for any kind of progress/loading indicator. My tests to the web service were sub-second. An entire page refresh is under a second as well. Any animation would be too quick.
+
+##Warning
+Running tests is a destructive task, since it calls all api methods (including clear) during the run.

@@ -48,6 +48,7 @@ define(['settings',
 				dataType: 'jsonp',
 				data: data,
 				success: handleCallBack,
+				timeout : 10000, //this is essential for handling the jsonp error
 				error: function(e){
 					console.log(e);
 					Game.trigger('error');
@@ -68,13 +69,21 @@ define(['settings',
 		//instance methods
 		Game.include({
 			vote: function(options, cb){
-				connect('vote', cb, {id: this.id}, options);
-				this.updateAttribute('votes', this.votes + 1);
+				connect('vote', this.proxy(function(){
+					if(cb){
+						cb();
+					}
+					this.updateAttribute('votes', this.votes + 1);
+				}), {id: this.id}, options);
 			},
 
 			setOwned: function(options, cb){
-				connect('setgotit', cb, {id: this.id}, options);
-				this.updateAttribute('owned', true);
+				connect('setgotit', this.proxy(function(){
+					if(cb){
+						cb();
+					}
+					this.updateAttribute('owned', true);
+				}), {id: this.id}, options);
 			},
 
 			//override spine's save method because we aren't using REST (default spine behavior)
