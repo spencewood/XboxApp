@@ -68,6 +68,9 @@
     };
 
     Route.unbind = function() {
+      if (this.options.shim) {
+        return;
+      }
       if (this.history) {
         return $(window).unbind('popstate', this.change);
       } else {
@@ -106,12 +109,7 @@
     };
 
     Route.getPath = function() {
-      var path;
-      path = window.location.pathname;
-      if (path.substr(0, 1) !== '/') {
-        path = '/' + path;
-      }
-      return path;
+      return '/';
     };
 
     Route.getHash = function() {
