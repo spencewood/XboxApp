@@ -6,7 +6,7 @@ Tests: http://xbox.notqualified.org/test
 ##Features
  * Built with [Spine](http://spinejs.com/) MVC framework
  * Using [Require](http://requirejs.org/) for modules, dependencies and compression
- * Unit and integration testing with [Mocha](http://visionmedia.github.com/mocha/)
+ * Unit and integration testing with [Mocha](https://mochajs.org/)
  * Utilizes [Twitter Bootstrap](http://twitter.github.com/bootstrap/) for non-ugly feel, consistent UI
  * Uses [Handlebars](http://handlebarsjs.com/) for all dynamic templating
  * Stores "session" data in the browser's Local Storage (for keeping track of daily votes)
